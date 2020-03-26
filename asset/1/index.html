@@ -1,0 +1,414 @@
+<!doctype html>
+<html>
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Socket.IO</title>
+    
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      /*form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }*/
+     /*html,body{height:100%;overflow:hidden;}*/
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      .content{display: flex;justify-content: flex-start;align-content: flex-start;}
+      .list{width: 300px;height: 100%;border-right: 1px solid #eee;position: relative;}
+      .form{width: 100%;height: 100%;overflow-y:scroll;padding-bottom: 40px;box-sizing: border-box;}
+      .form::-webkit-scrollbar {display:none}
+      .ipt{width: 20%;margin: 1px 0;}
+      label{width: 100%;display: block;}
+      .buttonbot{position: absolute;bottom: 0;left: 0; width: 100%;height:40px;display: flex;justify-content: space-around;align-items: center;background: #FFFFFF;}
+      .submit{background: #A9334C;color: #ffffff;height:25px; text-align: center;padding: 0 14px;border-radius: 6px;line-height: 25px;cursor: pointer;}
+      .delete{background: #A9334C;color: #ffffff;height:25px; text-align: center;padding: 0 14px;border-radius: 6px;line-height: 25px;cursor: pointer;}
+      .right{width: 100%;height: 100%;position: relative;}
+      .rightson{width: 100%;height: 100%;overflow-y: scroll;padding-bottom: 40px;box-sizing: border-box;}
+      .chartpre{position: relative;}
+      .deleteChart{position: absolute;top: 10px;left: 50%;transform: translateX(-50%);color: #A9334C;
+      	padding:2px 4px;border: 1px solid #A9334C;border-radius: 6px;cursor: pointer;}
+      .deleteCharts{color: #ffffff;padding: 0 10px;border: 1px solid #A9334C;border-radius: 6px;cursor: pointer;display: inline-block;
+      	margin:0 20px;background: #A9334C;height: 25px;line-height: 25px;}
+      .pauseCharts{color: #ffffff;padding:0 10px;border: 1px solid #A9334C;border-radius: 6px;cursor: pointer;display: inline-block;
+      	margin: 0 20px;background: #A9334C;height: 25px;line-height: 25px;}
+      .pauseChart{position: absolute;top: 10px;left: 55%;color: #A9334C;
+      	padding:2px 4px;border: 1px solid #A9334C;border-radius: 6px;cursor: pointer;}
+      .bot{display: flex;justify-content: flex-start;align-items: center;position: absolute;bottom: 0;left: 0; width: 100%;height: 40px;}
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+  </head>
+  <body>
+  	<div class="content">
+  		<div class="list" >
+  			<form action="" class="form"  method="post">
+  				<div class="lab">
+  				</div>
+  				<div class="buttonbot">
+  					<div class="submit" onclick="submit()">提交</div>
+  					<div class="submit" onclick="connect()">重连</div>
+  					<div class="delete" onclick="deleted()">清空</div>
+  				</div>
+  				
+  			</form>
+  		</div>
+  		<div class="right">
+  			<div class="rightson">
+  				<div class="chartpre">
+			  		<div id="id1" style="height:300px;"></div> 
+			  		<div class="deleteChart" onclick="deleteChart(1)">清空1通道</div>
+			  		<div class="pauseChart pauseChart1" onclick="pauseChart(1)">暂停1通道</div>
+			  	</div>
+			    <div class="chartpre">
+			  		<div id="id2" style="height:300px;"></div>  
+			  		<div class="deleteChart" onclick="deleteChart(2)">清空2通道</div>
+			  		<div class="pauseChart pauseChart2" onclick="pauseChart(2)">暂停2通道</div>
+			  	</div> 
+			    <div class="chartpre">
+			  		<div id="id3" style="height:300px;"></div>  
+			  		<div class="deleteChart" onclick="deleteChart(3)">清空3通道</div>
+			  		<div class="pauseChart pauseChart3" onclick="pauseChart(3)">暂停3通道</div>
+			  	</div> 
+			  	<div class="chartpre">
+			  		<div id="id4" style="height:300px;"></div>  
+			  		<div class="deleteChart" onclick="deleteChart(4)">清空4通道</div>
+			  		<div class="pauseChart pauseChart4" onclick="pauseChart(4)">暂停4通道</div>
+			  	</div> 
+  			</div>
+	  		
+		  	<div class="bot">
+		  		<div class="deleteCharts" onclick="deleteChart()">清空全部通道</div>
+		    	<div class="pauseCharts" onclick="pauseChart()">暂停全部通道</div>
+		  	</div>
+	  	</div>
+  	</div>
+  	
+  	
+    	
+    <!--<ul id="messages"></ul>-->
+    <!--<form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>-->
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <!--<script src="js/socket.io-1.2.0.js"></script>-->
+    <script src="js/jquery.js"></script>
+    <script src="js/echarts.common.js"></script>
+    <script>
+    	//全局参数和数据初始化
+    	chartStart()
+      var arr=[],msg1=[],msg2=[],msg3=[],msg4=[],date1=[],date2=[],date3=[],date4=[],n=0;
+			var ispause=[true,true,true,true,true];//是否暂停通道的开关
+			var checklist=[];//勾选的左边列表时间arr
+			
+			//模拟左边列表数据
+//			let text=''						
+//			for(let i=0;i<100;i++){
+//				text=text+'<label><input class="ipt" οnclick="checkboxOnclick(this)" type="checkbox" name="time" value='+i+'>123456789123456789 </label> '
+//			}
+//			$('.lab').html(text);
+ 			
+      
+
+//			模拟数据
+//    let mm=JSON.parse(localStorage.getItem("msg")) 
+//    console.log(mm)
+//    setOption(mm[n])
+//    setInterval(function(){
+//    	setOption(mm[n+1])
+//    	n++
+//    	if(n>=mm.length-1){
+//    		n=0
+//    	}
+//    },100)
+//			模拟数据     
+       
+       
+      var s2 = io("");
+      //发送获取左边时间列表信号
+      $(window).load(function(){
+      	console.log(333)
+				let data={
+            'Time':[],
+            'Type':'req'
+          }
+        s2.emit('req', JSON.stringify(data));
+        
+// 　　　　s2.emit('req', "{\"Time\":[],\"Type\":\"req\"}");
+　　	})
+      //得到左边时间列表并加载到页面
+      s2.on('list', function(msg){
+      	console.log(333666999)
+        let msgs=JSON.parse(msg)
+        let time=msgs.Time.sort(function (a,b){ return a-b })
+        console.log(time)
+        let text=''						
+				for(let i=0;i<time.length;i++){
+					text=text+'<label><input class="ipt" οnclick="checkboxOnclick(this)" type="checkbox" name="time" value='+time[i]+'>'+timeFormate(time[i])+'</label> '
+				}
+				$('.lab').html(text);
+        inputClick()
+      });
+      //监听传过来的数据展示波形
+      s2.on('reply', function(msg){
+        setOption(msg)
+      });
+      s2.on('tf', function(msg){
+        console.log(msg)
+      });
+      
+//    $('form').submit(function(){
+//      s2.emit('msg', $('#m').val(), function(data){
+//        $('#messages').append($('<li>').text('ACK CALLBACK: ' + data));
+//      });
+//      socket.emit('notice', $('#m').val());
+//      $('#m').val('');
+//      return false;
+//    })
+
+
+			
+			//重新连接
+			function connect(){
+				let data={
+            'Time':[],
+            'Type':'req'
+          }
+        s2.emit('req', JSON.stringify(data));
+			}
+			
+			
+			//时间格式转换
+			function timeFormate(time){
+				let num=time.substring(0,13)-0;
+				let nm=time.substring(10,19)
+				let date=new Date(num);
+		    let year=String(date.getFullYear()) ; 
+		    let month=date.getMonth()+1<10?"0"+date.getMonth()+1:date.getMonth()+1; 
+		    let day=date.getDate()<10?"0"+date.getDate():date.getDate(); 
+		    let hour=date.getHours()<10?"0"+date.getHours():date.getHours(); 
+		    let minute=date.getMinutes()<10?"0"+date.getMinutes():date.getMinutes(); 
+		    let second=date.getSeconds()<10?"0"+date.getSeconds():date.getSeconds(); 
+		    return time= year.substring(2,4)+"-"+month+"-"+day+" "+hour+":"+minute+":"+second+"."+nm; 
+
+			}
+
+      //提交发送
+ 			function submit(){
+        console.log(checklist)
+ 				if(checklist.length){
+          let data={
+            'Time':checklist,
+            'Type':'play'
+          }
+          s2.emit('req', JSON.stringify(data));
+          deleteChart()
+ 				}else{
+ 					alert('没有勾选内容')
+ 				}
+ 				
+ 			}
+ 			//清除左边列表勾选
+ 			function deleted(){
+ 				var s = $("input[name='time']");
+		    s.each(function(i) {
+		    	s[i].checked=false
+        }); 
+        checklist=[]
+ 			}
+
+      
+      //左边列表勾选
+      function inputClick(){
+        console.log(checklist)
+		    var s = $("input[name='time']");
+		    s.each(function(i) {          
+            $(this).click(function(){
+              console.log(checklist)  
+                if(this.checked==true){
+                  checklist.push(this.value)
+                  console.log(checklist)    
+                }else{
+                	checklist.find((m,i)=>{if(m==this.value){checklist.splice(i,1)}})
+                  console.log(checklist)
+                }
+             });
+        }); 
+			}
+      
+      
+			//echart初始化
+      function chartStart(){
+      	for(let i=1;i<5;i++){
+      		var chart='myChart'+i;
+      		window[chart]=echarts.init(document.getElementById('id'+i));
+      		let option={
+      			title: {
+                text: '通道:'+i
+            },
+            tooltip: {
+							trigger: 'axis',
+							axisPointer: {
+								type: 'cross',
+								crossStyle: {
+									color: '#999'
+								}
+							}
+						},
+						dataZoom: [
+		            {
+		                type: 'slider',
+		                show: true,
+//		                start: 94,
+//		                end: 100,
+		                handleSize: 8
+		            },
+		            {
+		                type: 'inside',
+		                start: 94,
+		                end: 100
+		            },
+		            {
+		                type: 'slider',
+		                show: true,
+		                yAxisIndex: 0,
+		                filterMode: 'empty',
+		                width: 12,
+		                height: '70%',
+		                handleSize: 8,
+		                showDataShadow: false,
+		                left: '93%'
+		            }
+		        ],
+						xAxis: {
+							type: 'category',
+							axisTick: {length:5},
+							axisLabel : {//坐标轴刻度标签的相关设置。
+                rotate:"45"
+            	},
+//    网格线是否显示
+//          	splitLine:{
+//          		show:true
+//          	},
+              data: []
+            },
+            yAxis: {
+            	 scale: true
+            },
+            series: [{
+                name: 'value',
+//              symbol: "none",
+                type: 'line',
+                data: []
+            }]
+      		}
+      		window[chart].setOption(option);      		
+      	}
+      	let height=$(window).height();
+      	$('.content').css('height',height)
+      };
+      
+      //设置echart数据
+      function setOption(msg){
+      	let msgs=JSON.parse(msg)
+      	console.log(msgs)
+      	//ispause数组为暂停的开关
+      	if(ispause[msgs.Id]){
+	      	let msgname='msg'+msgs.Id;
+	      	let chartname='myChart'+msgs.Id;
+	      	let datename='date'+msgs.Id;
+	      	window[chartname]=echarts.init(document.getElementById('id'+msgs.Id));
+	      	if(window[msgname].length>0){
+	      		window[msgname]=window[msgname].concat(msgs.Data);
+	      	}else{
+	      		window[msgname]=msgs.Data;
+	      	}
+	      	for(let i=0;i<msgs.Data.length;i++){
+	      			window[datename].push(i)
+	      	};
+	      	let option={
+	      		xAxis: {
+	            data: window[datename]
+	          },
+		        series: [{
+		            data: window[msgname]
+		        }]
+	      	}
+	      	window[chartname].setOption(option)
+      	}     
+      }
+      
+      
+      //清除echart数据
+      function deleteChart(id){
+      	if(id){
+      		console.log(id)
+      		let msgname='msg'+id;
+	      	let chartname='myChart'+id;
+	      	let datename='date'+id;
+	      	window[chartname]=echarts.init(document.getElementById('id'+id));
+	      	window[msgname]=[];
+	      	window[datename]=[]
+	      	let option={
+	      		xAxis: {
+	            data: window[datename]
+	           },
+		        series: [{
+		            data: window[msgname]
+		        }]
+	      	}
+	      	window[chartname].setOption(option)
+      	}else{
+      		chartStart()
+      		for(let i=1;i<5;i++){
+      			let msgname='msg'+i;
+		      	let datename='date'+i;
+		      	window[msgname]=[];
+	      		window[datename]=[]
+      		}
+      	}
+      	
+      }
+    
+    	//暂停echart数据
+    	function pauseChart(id){
+    		//传了id是各个小通道，没传是全部通道
+    		if(id){
+    			let text='';
+	    		ispause[id]=!ispause[id]
+	    		if(ispause[id]){
+	    			text='暂停'+id+'通道'
+	    		}else{
+	    			text='开始'+id+'通道'
+	    		}
+	    		$('.pauseChart'+id).html(text)
+    		}else{
+				// ispause第一个元素作为判断是否全部暂停或开始的依据,其他小通道从下标1开始的
+					if(ispause[0]){
+						for(let i=0;i<ispause.length;i++){
+	    				ispause[i]=false
+	    				console.log(ispause)
+	    				if(i>=1){
+	    					let text='开始'+i+'通道';
+	    					$('.pauseChart'+i).html(text)
+	    					console.log(text)
+	    				}
+	    			}
+						let textall='开始所有通道'
+						$('.pauseCharts').html(textall)
+					}else{
+						for(let i=0;i<ispause.length;i++){
+	    				ispause[i]=true
+	    				console.log(ispause)
+	    				if(i>=1){
+	    					let text='暂停'+i+'通道';
+	    					$('.pauseChart'+i).html(text)
+	    					console.log(text)
+	    				}
+	    			}
+						let textall='暂停所有通道'
+						$('.pauseCharts').html(textall)
+					}
+    		}
+    	}
+    </script>
+  </body>
+</html>
