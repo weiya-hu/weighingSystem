@@ -11,7 +11,7 @@
 				    end-placeholder="结束时间"
 				    placeholder="选择时间范围">
 				</el-time-picker>-->
-				<el-date-picker v-model="timevalue" @change='timechange' type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 3rem;">
+				<el-date-picker v-model="timevalue" @change='timechange' value-format="timestamp" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 3rem;">
 				</el-date-picker>
 			</div>
 			<div class="cheselect flexl">
@@ -48,31 +48,31 @@
 		</div>-->
 		<div class="currentdown">
 			<div class="flexl currentdowntitle">
-				<div style="flex: 0.8;">时间</div>
-				<div style="flex: 0.5;">车型</div>
+				<div style="flex: 0.9;">时间</div>
+				<div style="flex: 0.4;">车型</div>
 				<div style="flex: 1.6;">轴距(m)</div>
-				<!--<div style="flex: 2;" class="zweight">轴重(KG)</div>-->
+				<div style="flex: 2;" class="zweight">轴重(KG)</div>
 				<div style="flex:0.7;">速度(KM/h)</div>
 				<div style="flex: 0.7;">总重(KG)</div>
 				<div style="flex: 0.6;">车辆状态</div>
 			</div>
 			<div class="contitempre">
 				<div v-for="(item,index) in historylist" class="contitem flexl">
-					<div style="flex: 0.8;">{{item.Time | dateformate}}</div>
-					<div style="flex: 0.5;">{{item.AxisCnt}}</div>
-					<div style="flex: 1.6;" class="zdis">
-						<div v-for="(itm,inx) in item.Dis" class="disitem">
+					<div style="flex: 0.9;font-size: 0.16rem;">{{item.Time | dateformate}}</div>
+					<div style="flex: 0.4;">{{item.AxisCnt}}</div>
+					<div style="flex: 1.6;" class="zdis" :class="item.ZhouJu && (item.ZhouJu.length>6 || item.ZhouZhong.length>6)?'ftsz':''">
+						<div v-for="(itm,inx) in item.ZhouJu" class="disitem">
 							<div class="inx fleximg">{{inx+1}}</div>
-							<div>{{itm.Lenth | tofixed}}</div>
+							<div>{{itm | tofixed}}</div>
 						</div>
 					</div>
-					<!--<div style="flex: 2;" class="zdis zweight">
-						<div v-for="(itm,inx) in item.Zhou" class="disitem">
+					<div style="flex: 2;" class="zdis zweight" :class="item.ZhouJu && (item.ZhouJu.length>6 || item.ZhouZhong.length>6)?'ftsz':''">
+						<div v-for="(itm,inx) in item.ZhouZhong" class="disitem">
 							<div class="indx inx fleximg">{{inx+1}}</div>
-							<div>{{itm.Weight | tofixed}}</div>
+							<div>{{itm | tofixed}}</div>
 						</div>
 						
-					</div>-->
+					</div>
 					<div style="flex:0.7;">{{item.Speed | tofixed}}</div>
 					<div style="flex:0.7;">{{item.Weight | tofixed}}</div>
 					<div style="flex:0.6;">{{item.Direct | direct}}</div>
@@ -134,6 +134,8 @@
 			},
 			find() {
 				let data = {
+					TimeStart:this.timevalue[0]?parseInt(this.timevalue[0]+'000000'):parseInt(new Date(new Date().toLocaleDateString()).getTime()+'000000'),
+					TimeEnd:this.timevalue[1]?parseInt(this.timevalue[1]+'000000'): parseInt((new Date()).getTime()+'000000'),
 					From: 12 * (this.pagenum - 1),
 					To: 12 * this.pagenum,
 					Zhou: this.zhouvalue ? Number(this.zhouvalue) : 0,
@@ -320,6 +322,8 @@
 		height: 7.69%;
 		border-bottom: 1px solid #999999;
 		box-sizing: border-box;
+		overflow: scroll; 
+		white-space: nowrap;
 	}
 	
 	.contitem>div {
@@ -335,14 +339,18 @@
 	.zdis>div {
 		margin: 0.05rem;
 	}
-	
+	.history .ftsz{font-size: 0.14rem}
 	.zdis {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
 		align-content: space-around;
+		overflow: scroll;
+		white-space: nowrap;
 	}
-	
+	::-webkit-scrollbar {
+    		 width: 0 !important;height: 0;
+   	}
 	.inx {
 		font-size: 0.14rem;
 		background: #507FCB;

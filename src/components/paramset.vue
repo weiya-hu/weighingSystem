@@ -550,9 +550,11 @@
 			},
 			//确认修改
 			surexchange() {
+				console.log('querenxiugai')
 				let id = this.roadexchangeform.Id;
 				console.log(this.roadexchangeform)
 				this.roadlist[id - 1] = JSON.parse(JSON.stringify(this.roadexchangeform))
+				console.log(this.roadlist)
 				let data = {
 					Type: 'set',
 					Data:this.roadlist
@@ -573,7 +575,7 @@
 					Type: 'set',
 					Data:this.roadlist
 				}
-				
+				console.log(data)
 				this.$socket.emit('roadset', JSON.stringify(data));
 				
 			},
@@ -929,29 +931,30 @@
 				if(val) {
 					console.log('home传过来1',this.setactive)
 					if(this.setactive == 1) {
-						console.log('设置在仪器设置')
-						let localsetform = localStorage.getItem('localsetform')
-						if(this.CompareJsonObj(JSON.parse(localsetform), this.setform)) {
-							this.$emit('isok', true);
-						} else {
-							this.$confirm('是否保存设置?', '提示', {
-								confirmButtonText: '确定',
-								cancelButtonText: '取消',
-								type: 'warning'
-							}).then(() => {
-								if(that.sureset()) {
-									that.$emit('isok', true);
-								} else {
-									that.$emit('isok', false);
-								}
-							}).catch(() => {
-								that.$message({
-									type: 'info',
-									message: '已取消保存设置'
-								});
-								that.$emit('isok', true);
-							});
-						}
+//						console.log('设置在仪器设置')
+//						let localsetform = localStorage.getItem('localsetform')
+//						if(this.CompareJsonObj(JSON.parse(localsetform), this.setform)) {
+//							this.$emit('isok', true);
+//						} else {
+//							this.$confirm('是否保存设置?', '提示', {
+//								confirmButtonText: '确定',
+//								cancelButtonText: '取消',
+//								type: 'warning'
+//							}).then(() => {
+//								if(that.sureset()) {
+//									that.$emit('isok', true);
+//								} else {
+//									that.$emit('isok', false);
+//								}
+//							}).catch(() => {
+//								that.$message({
+//									type: 'info',
+//									message: '已取消保存设置'
+//								});
+//								that.$emit('isok', true);
+//							});
+//						}
+						that.$emit('isok', true);
 					} else if(this.setactive == 2) {
 						that.$emit('isok', true);
 					} else if(this.setactive == 3) {
@@ -974,6 +977,7 @@
 		border-top: none;
 		overflow: scroll;
 		position: relative;
+		white-space: nowrap;
 		padding-top: 0.58rem;
 	}
 	
@@ -1147,6 +1151,7 @@
 		align-items: center;
 		justify-content: center;
 		overflow: scroll;
+		white-space: nowrap;
 	}
 	
 	.changebt>span {
@@ -1162,6 +1167,7 @@
 	.otherparamdown {
 		height: 8rem;
 		overflow: scroll;
+		white-space: nowrap;
 	}
 	
 	#paramset .surebutother {
@@ -1315,6 +1321,7 @@
 		left: 0;
 		height: 2rem;
 		overflow: scroll;
+		white-space: nowrap;
 		background: #F8FFFF;
 	}
 	
@@ -1322,5 +1329,8 @@
 		width: 0.2rem;
 		margin-left: 0.2rem;
 	}
-	.exid{height:2rem;overflow: scroll;}
+	.exid{height:2rem;overflow: scroll;white-space: nowrap;}
+	 ::-webkit-scrollbar {
+    		 width: 0 !important;height: 0;
+   	}
 </style>
