@@ -26,6 +26,14 @@
 	    		参数设置
 	    	</div>
 	    </div>
+	    <div class="fleximg realtimepre" @click='list(6)' :class="num==6?'realtimepreactive':''">
+	    	<div class="realtimeimg fleximg">
+	    		<img src="../assets/jtcz.png"/>
+	    	</div>
+	    	<div class="realtimetxt">
+	    		静态称重
+	    	</div>
+	    </div>
 	    <div class="logo" @click="debugmode">
 	  		<div class="logoimg">
 	  			<img src="../assets/kj1.png"/>
@@ -40,6 +48,7 @@
   		<Paramset v-show='num===3' :click='hometoset' @isok='settohome'></Paramset>
   		<Product v-show='num===4'></Product>
   		<Debug v-if='num===5'></Debug>
+  		<Staticweigh v-if='num===6'></Staticweigh>
   	</div>
   </div>
   
@@ -50,20 +59,21 @@ import History from './history';
 import Paramset from './paramset';
 import Product from './product';
 import Debug from './debug';
+import Staticweigh from './staticweigh';
 export default {
 	
   name: 'Home',
   data() {
 		return {
 			height:'',//页面高度
-			num:1,
+			num:6,
 			numflag:1,
 			date:'',
 			hometoset:0,//home页面传给设置页面的数据
 		}
 	},
 	components: {
-    Realtime,History,Paramset,Product,Debug
+    Realtime,History,Paramset,Product,Debug,Staticweigh
   },
 	created() {
 		let that=this;
@@ -100,8 +110,6 @@ export default {
 	  		console.log(this.num)
 	  		console.log(this.hometoset)
 	  	}
-	  	
-	  	
 	  },
 	  settohome(msg){
 	  	console.log(msg)
