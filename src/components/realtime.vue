@@ -1,58 +1,5 @@
 <template>
 	<div class="realtime" style="height: 100%;">
-		<!--<div>-->
-			<!--0-16通道-->
-			<!--<div class="flexl channel">
-				<div class="channeltxt">通道号</div>
-				<div class="channelnum flexl">
-					<div v-for="(item,index) in adarr.slice(0,16)">{{index+1}}</div>
-				</div>
-			</div>
-			<div class="flexl advalue">
-				<div class="channeltxt">ADValue：</div>
-				<div class="channelnum channelnuma flexl">
-					<div v-for="(item,index) in adarr.slice(0,16)" class="adcAvg">{{item.AdcAvg | tofixed}}</div>
-				</div>
-			</div>
-			<div class="flexl advalue">-->
-				<div class="channeltxt">DAValue：</div>
-				<div class="channelnum channelnuma flexl">
-					<div v-for="(item,index) in adarr.slice(0,16)">{{item.Dac}}</div>
-				</div>
-			</div>
-			<!--<div class="flexl advalue">
-				<div class="channeltxt">W(10KG)：</div>
-				<div class="channelnum channelnuma flexl">
-					<div v-for="item in 16">{{item}}</div>
-				</div>
-			</div>-->
-			<!--16-32通道-->
-			<!--<div class="flexl channel">
-				<div class="channeltxt">通道号</div>
-				<div class="channelnum flexl">
-					<div v-for="(item,index) in adarr.slice(16,32)">{{index+17}}</div>
-				</div>
-			</div>
-			<div class="flexl advalue">
-				<div class="channeltxt">ADValue：</div>
-				<div class="channelnum channelnuma flexl">
-					<div v-for="(item,index) in adarr.slice(16,32)" class="adcAvg">{{item.AdcAvg | tofixed}}</div>
-				</div>
-			</div>
-			<div class="flexl advalue">-->
-				<div class="channeltxt">DAValue：</div>
-				<div class="channelnum channelnuma flexl">
-					<div v-for="(item,index) in adarr.slice(16,32)">{{item.Dac}}</div>
-				</div>
-			</div>
-			<!--<div class="flexl advalue">
-				<div class="channeltxt">W(10KG)：</div>
-				<div class="channelnum channelnuma flexl">
-					<div v-for="item in 10">{{item}}</div>
-				</div>
-			</div>-->
-		<!--</div>-->
-		
 		<div>
 			<!--0-16通道-->
 			<div class="flexl channel">

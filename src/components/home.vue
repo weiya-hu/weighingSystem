@@ -26,14 +26,14 @@
 	    		参数设置
 	    	</div>
 	    </div>
-	    <div class="fleximg realtimepre" @click='list(6)' :class="num==6?'realtimepreactive':''">
+	    <!--<div class="fleximg realtimepre" @click='list(6)' :class="num==6?'realtimepreactive':''">
 	    	<div class="realtimeimg fleximg">
 	    		<img src="../assets/jtcz.png"/>
 	    	</div>
 	    	<div class="realtimetxt">
 	    		静态称重
 	    	</div>
-	    </div>
+	    </div>-->
 	    <div class="logo" @click="debugmode">
 	  		<div class="logoimg">
 	  			<img src="../assets/kj1.png"/>
@@ -67,7 +67,7 @@ export default {
   data() {
 		return {
 			height:'',//页面高度
-			num:6,
+			num:1,
 			numflag:1,
 			date:'',
 			hometoset:0,//home页面传给设置页面的数据
