@@ -1,0 +1,18 @@
+{
+	"Axis": 6,
+	"SpeedWeight": [
+		{
+			"From": 1,
+			"To": 99,
+			"Corr": 1
+		}
+	],
+	"Magic": [
+		{
+			"From": 6000,
+			"To": 80000,
+			"Magic": 14980
+		}
+	],
+	"IsMagic": false
+}

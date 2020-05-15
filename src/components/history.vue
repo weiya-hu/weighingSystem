@@ -11,7 +11,7 @@
 				    end-placeholder="结束时间"
 				    placeholder="选择时间范围">
 				</el-time-picker>-->
-				<el-date-picker v-model="timevalue" @change='timechange' value-format="timestamp" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 3rem;">
+				<el-date-picker v-model="timevalue" @change='timechange' value-format="timestamp" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width: 5rem;">
 				</el-date-picker>
 			</div>
 			<div class="cheselect flexl">

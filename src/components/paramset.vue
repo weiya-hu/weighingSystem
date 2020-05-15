@@ -186,6 +186,18 @@
 					<div class="weighttxt">交互参数</div>
 					<!--<p class="surebut surebutt">确认</p>-->
 				</div>
+				<!--分度值设置-->
+				<div class="weightset setcontip flexa">
+					<div class="flexl">
+						<div>
+							<label for="fenduvalue">分度值：</label>
+							<input type="number" id="fenduvalue" v-model.trim="fenduvalue" />
+						</div>
+					</div>
+
+					<div class="weighttxt">分度值设置</div>
+					<p class="surebut surebutt fendusure" @click="fendusure">确认</p>
+				</div>
 				<!--<div class="surebut" @click="sureset">确认设置</div>-->
 				<input type="submit" class="surebut" value="确认设置" />
 			</form>
@@ -422,7 +434,8 @@
 				addsensorpreshow: false, //增加通道传感器的多选框是否显示
 				ischangemodeshow: false, //车道号修改页面的mode是否显示
 				isaddmodeshow: false,//车道号增加页面的mode是否显示
-				weighingform:[]
+				weighingform:[],//重量系数数据数组
+				fenduvalue:'',//分度值
 			}
 		},
 		created() {
@@ -441,14 +454,24 @@
 		},
 		mounted() {
 			console.log('paramset')
-			console.log(this.click)
-			let that = this
-			this.$nextTick(function() {})
+			//页面刚开始发送分度值请求
+			let data = {
+				Type: 'get'
+			}
+			this.$socket.emit('fendu', JSON.stringify(data));
 		},
 		methods: {
 			//阻止冒泡
 			stopmp() {
 				console.log()
+			},
+			//设置分度值
+			fendusure(){
+				let data={
+		       Type:'set',
+		       Fendu:Number(this.fenduvalue) 
+				}
+				this.$socket.emit('fendu', JSON.stringify(data));
 			},
 			sensorpreshows() {
 				console.log(1000)
@@ -489,35 +512,36 @@
 			changeset(id) {
 				console.log(id)
 				let cnum=this.setactive,that=this;
-				if(cnum==1){
-					let localsetform = localStorage.getItem('localsetform')
-					console.log(this.CompareJsonObj(JSON.parse(localsetform), this.setform))
-					console.log(JSON.parse(localsetform))
-					console.log(this.setform)
-					if(this.CompareJsonObj(JSON.parse(localsetform), this.setform)) {
-						this.setactive = id
-					} else {
-						this.$confirm('是否保存设置?', '提示', {
-							confirmButtonText: '确定',
-							cancelButtonText: '取消',
-							type: 'warning'
-						}).then(() => {
-							if(that.sureset()){
-								that.setactive = id
-							}else{//保存失败没写。饶工没有返回失败的情况
-								
-							}
-						}).catch(() => {
-							that.$message({
-								type: 'info',
-								message: '已取消保存设置'
-							});
-							that.setactive = id
-						});
-					}
-				}else{
-					that.setactive = id
-				}
+				that.setactive = id
+//				if(cnum==1){
+//					let localsetform = localStorage.getItem('localsetform')
+//					console.log(this.CompareJsonObj(JSON.parse(localsetform), this.setform))
+//					console.log(JSON.parse(localsetform))
+//					console.log(this.setform)
+//					if(this.CompareJsonObj(JSON.parse(localsetform), this.setform)) {
+//						this.setactive = id
+//					} else {
+//						this.$confirm('是否保存设置?', '提示', {
+//							confirmButtonText: '确定',
+//							cancelButtonText: '取消',
+//							type: 'warning'
+//						}).then(() => {
+//							if(that.sureset()){
+//								that.setactive = id
+//							}else{//保存失败没写。饶工没有返回失败的情况
+//								
+//							}
+//						}).catch(() => {
+//							that.$message({
+//								type: 'info',
+//								message: '已取消保存设置'
+//							});
+//							that.setactive = id
+//						});
+//					}
+//				}else{
+//					that.setactive = id
+//				}
 				
 			},
 			//删除通道信息
@@ -831,6 +855,18 @@
 			}
 		},
 		sockets: {
+			fendu(data){
+				let dat = JSON.parse(data)
+				if(dat.Type=='get'){
+					this.fenduvalue=dat.Fendu
+				}
+				if(dat.Type=='set' && dat.Status=='success'){
+					this.$message({
+						type: 'success',
+						message: '设置分度值成功!'
+					});
+				}
+			},
 			sparm(data) {
 				console.log(JSON.parse(data))
 				let dat = JSON.parse(data)
@@ -925,43 +961,43 @@
 				
 			},
 			//监听父组件有没有从设置页面点击到其他页面，再比对设置数据有没有改变或者改了忘了上传，提醒保存设置
-			click(val, oldval) {
-				let that = this;
-				//如果传过来的是1就是要从设置页面跳转到其他页面了
-				if(val) {
-					console.log('home传过来1',this.setactive)
-					if(this.setactive == 1) {
-//						console.log('设置在仪器设置')
-//						let localsetform = localStorage.getItem('localsetform')
-//						if(this.CompareJsonObj(JSON.parse(localsetform), this.setform)) {
-//							this.$emit('isok', true);
-//						} else {
-//							this.$confirm('是否保存设置?', '提示', {
-//								confirmButtonText: '确定',
-//								cancelButtonText: '取消',
-//								type: 'warning'
-//							}).then(() => {
-//								if(that.sureset()) {
-//									that.$emit('isok', true);
-//								} else {
-//									that.$emit('isok', false);
-//								}
-//							}).catch(() => {
-//								that.$message({
-//									type: 'info',
-//									message: '已取消保存设置'
-//								});
-//								that.$emit('isok', true);
-//							});
-//						}
-						that.$emit('isok', true);
-					} else if(this.setactive == 2) {
-						that.$emit('isok', true);
-					} else if(this.setactive == 3) {
-						that.$emit('isok', true);
-					}
-				}
-			}
+//			click(val, oldval) {
+//				let that = this;
+//				//如果传过来的是1就是要从设置页面跳转到其他页面了
+//				if(val) {
+//					console.log('home传过来1',this.setactive)
+//					if(this.setactive == 1) {
+////						console.log('设置在仪器设置')
+////						let localsetform = localStorage.getItem('localsetform')
+////						if(this.CompareJsonObj(JSON.parse(localsetform), this.setform)) {
+////							this.$emit('isok', true);
+////						} else {
+////							this.$confirm('是否保存设置?', '提示', {
+////								confirmButtonText: '确定',
+////								cancelButtonText: '取消',
+////								type: 'warning'
+////							}).then(() => {
+////								if(that.sureset()) {
+////									that.$emit('isok', true);
+////								} else {
+////									that.$emit('isok', false);
+////								}
+////							}).catch(() => {
+////								that.$message({
+////									type: 'info',
+////									message: '已取消保存设置'
+////								});
+////								that.$emit('isok', true);
+////							});
+////						}
+//						that.$emit('isok', true);
+//					} else if(this.setactive == 2) {
+//						that.$emit('isok', true);
+//					} else if(this.setactive == 3) {
+//						that.$emit('isok', true);
+//					}
+//				}
+//			}
 		}
 	}
 </script>
@@ -1262,6 +1298,7 @@
 		width: 1.2rem;
 	}
 	
+	.fendusure{margin: 0.1rem auto;}
 	.setcontip {
 		margin-top: 0.6rem;
 		padding-bottom: 0.4rem;

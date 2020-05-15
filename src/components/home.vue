@@ -45,7 +45,8 @@
   		<Realtime v-show='num===1'></Realtime>
   		<History v-show='num===2'></History>
   		<!--修改的数据不会保留，除非用户点击上传保留，避免用户看到已经改变的数据以为已经保存，实际没有保存-->
-  		<Paramset v-show='num===3' :click='hometoset' @isok='settohome'></Paramset>
+  		<!--<Paramset v-show='num===3' :click='hometoset' @isok='settohome'></Paramset>-->
+  		<Paramset v-show='num===3'></Paramset>
   		<Product v-show='num===4'></Product>
   		<Debug v-if='num===5'></Debug>
   		<Staticweigh v-if='num===6'></Staticweigh>
@@ -99,17 +100,17 @@ export default {
 	    console.log(key, keyPath);
 	  },
 	  list(id){
-	  	this.numflag=id
-	  	if(this.num==3){
-	  		this.hometoset=1;
-	  		console.log(this.hometoset)
+	  	this.num=id;
+//	  	if(this.num==3){
+//	  		this.hometoset=1;
+//	  		console.log(this.hometoset)
+////	  		this.num=id;
+//	  	}else{
 //	  		this.num=id;
-	  	}else{
-	  		this.num=id;
-	  		this.hometoset=0;
-	  		console.log(this.num)
-	  		console.log(this.hometoset)
-	  	}
+//	  		this.hometoset=0;
+//	  		console.log(this.num)
+//	  		console.log(this.hometoset)
+//	  	}
 	  },
 	  settohome(msg){
 	  	console.log(msg)
