@@ -42,12 +42,12 @@
   		<div class="date">{{date}}</div>
   	</div>
   	<div class="right fleximg">
-  		<Realtime v-show='num===1'></Realtime>
-  		<History v-show='num===2'></History>
+  		<Realtime v-if='num===1'></Realtime>
+  		<History v-if='num===2'></History>
   		<!--修改的数据不会保留，除非用户点击上传保留，避免用户看到已经改变的数据以为已经保存，实际没有保存-->
   		<!--<Paramset v-show='num===3' :click='hometoset' @isok='settohome'></Paramset>-->
-  		<Paramset v-show='num===3'></Paramset>
-  		<Product v-show='num===4'></Product>
+  		<Paramset v-if='num===3'></Paramset>
+  		<!--<Product v-show='num===4'></Product>-->
   		<Debug v-if='num===5'></Debug>
   		<Staticweigh v-if='num===6'></Staticweigh>
   	</div>
@@ -167,14 +167,14 @@ export default {
 	.menu{width: 3rem;height:100%;border-right: 1px solid #e6e6e6;background:#507FCB ;position: relative;box-sizing: border-box;}
 	.realtimeimg{width: 0.3rem;margin-right: 0.28rem;}
 	.realtimetxt{color: #FAFAFA;font-size: 0.22rem;}
-	.realtimepre{width: 85%;margin: 0.60rem auto;background: linear-gradient(top,#DDDDE4 0%, #000028 20%,#000028 80%,#DDDDE4 100%);
+	.realtimepre{width: 85%;margin: 0.40rem auto;background: linear-gradient(top,#DDDDE4 0%, #000028 20%,#000028 80%,#DDDDE4 100%);
 		padding: 0.4rem 0;border-radius: 10px;}
 	.realtimepretop{margin-top: 0.9rem;}
 	.home .realtimepreactive{background: linear-gradient(top,#DDDDE4 0%, #1840A8 20%,#1840A8 80%,#DDDDE4 100%)}
 	.home .el-menu{border-right:none;}
 	.right{width: 100%;height:100%;overflow-y: scroll;overflow-x: auto;}
 	.right::-webkit-scrollbar {display:none}
-	.logo{position:absolute;bottom: 0.4rem;left: 50%;transform: translateX(-50%);z-index: 12;}
+	.logo{position:absolute;bottom: 0.3rem;left: 50%;transform: translateX(-50%);z-index: 12;}
 	.logoimg{display: flex; justify-content: center;align-items: center; width: 1rem;}
 	.logoimg img{width: 100%;}
 	.date{position: absolute;top: 0.3rem;left: 50%;transform: translateX(-50%);font-size: 0.16rem;width: 100%;text-align: center;

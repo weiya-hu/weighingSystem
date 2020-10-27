@@ -20,6 +20,7 @@
 			<div class="butn" @click="calparm">设定重量系数</div>
 		</div>
 		<div class="datastate" :class="isdataactive?'datastateactive':''"></div>
+		<div class="datastate datastatedown" :class="datastatedownactive=='green'?'datastatedowngreen':datastatedownactive=='red'?'datastatedownred':''"></div>
 	</div>
 </template>
 
@@ -30,7 +31,8 @@
             weightdata:{},
             trueweigh:'',
             WeightParm:'',
-            isdataactive:false
+            isdataactive:false,
+            datastatedownactive:'gray'
         }
     },
     mounted(){
@@ -92,12 +94,18 @@
 		  	if(dat.Type=="report"){
 		  		that.weightdata=dat;
 		  		that.isdataactive=true;
+		  		if(dat.DataStable==1){
+			  		that.datastatedownactive='green'
+		  		}else if(dat.DataStable==0){
+			  		that.datastatedownactive='red'
+		  		}
 		  		if(that.trueweigh=='' && that.WeightParm==''){
 		  			that.trueweigh=dat.RealWeight;
 		  			that.WeightParm = that.getFloat(dat.WeightParm, 4)
 		  		}
 		  		setTimeout(function(){
-		  			that.isdataactive=false
+		  			that.isdataactive=false;
+		  			that.datastatedownactive='gray'
 		  		},500)
 		  	}
 		  	
@@ -221,7 +229,10 @@
    .weightParm{width: 2rem;height: 0.5rem;font-size: 0.3rem;padding:0 0.1rem;border-radius: 0.06rem;
    	background: #FFFFFF;}
    .butn{font-size: 0.18rem;padding: 0.2rem;background: #1840A8;border-radius: 0.06rem;cursor: pointer;}
-   .datastate{position: absolute;top: 1rem;right: 5%;width: 0.4rem;height: 0.4rem;
+   .datastate{position: absolute;top: 0.9rem;right: 5%;width: 0.4rem;height: 0.4rem;
    		background: gray;border-radius: 50%;}
    	.datastateactive{background:#95F204}
+   	.datastatedown{top: 1.7rem;}
+   	.datastatedownred{background:red}
+   	.datastatedowngreen{background:#95F204}
 </style>

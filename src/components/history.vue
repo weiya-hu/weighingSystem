@@ -48,18 +48,23 @@
 		</div>-->
 		<div class="currentdown">
 			<div class="flexl currentdowntitle">
-				<div style="flex: 0.9;">时间</div>
-				<div style="flex: 0.4;">车型</div>
+				<div style="flex: 0.7;">时间</div>
+				<div style="flex: 0.3;">车型</div>
+				<div style="flex: 0.4;">车牌</div>
 				<div style="flex: 1.6;">轴距(m)</div>
 				<div style="flex: 2;" class="zweight">轴重(KG)</div>
-				<div style="flex:0.7;">速度(KM/h)</div>
+				<div style="flex:0.8;">速度(KM/h)</div>
 				<div style="flex: 0.7;">总重(KG)</div>
 				<div style="flex: 0.6;">车辆状态</div>
+				
+				<div style="flex: 0.6;">车道号</div>
+				<div style="flex: 0.6;">传感器</div>
 			</div>
 			<div class="contitempre">
 				<div v-for="(item,index) in historylist" class="contitem flexl">
-					<div style="flex: 0.9;font-size: 0.16rem;">{{item.Time | dateformate}}</div>
-					<div style="flex: 0.4;">{{item.AxisCnt}}</div>
+					<div style="flex: 0.7;white-space: normal;">{{item.Time | dateformate}}</div>
+					<div style="flex: 0.3;">{{item.PubCarCode}}</div>
+					<div style="flex: 0.4;">{{item.ChePai}}</div>
 					<div style="flex: 1.6;" class="zdis" :class="item.ZhouJu && (item.ZhouJu.length>6 || item.ZhouZhong.length>6)?'ftsz':''">
 						<div v-for="(itm,inx) in item.ZhouJu" class="disitem">
 							<div class="inx fleximg">{{inx+1}}</div>
@@ -69,13 +74,25 @@
 					<div style="flex: 2;" class="zdis zweight" :class="item.ZhouJu && (item.ZhouJu.length>6 || item.ZhouZhong.length>6)?'ftsz':''">
 						<div v-for="(itm,inx) in item.ZhouZhong" class="disitem">
 							<div class="indx inx fleximg">{{inx+1}}</div>
-							<div>{{itm | tofixed}}</div>
+							<div>{{itm | parseint}}</div>
 						</div>
 						
 					</div>
-					<div style="flex:0.7;">{{item.Speed | tofixed}}</div>
-					<div style="flex:0.7;">{{item.Weight | tofixed}}</div>
+					<div style="flex:0.8;">{{item.Speed | tofixed}}</div>
+					<div style="flex:0.7;">{{item.Weight | parseint}}</div>
 					<div style="flex:0.6;">{{item.Direct | direct}}</div>
+					<div style="flex:0.6;" class="zdis zweight">
+						<div v-for="(itm,inx) in item.RoadNum" class="disitem">
+							<div>{{itm}}</div>
+						</div>
+					</div>
+					<div style="flex:0.6;" class="zdis zweight">
+						<div>{{item.Row}}/</div>
+						<div v-for="(itm,inx) in item.Seneor" class="disitem">
+							<div>{{itm}}</div>
+						</div>
+					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -196,6 +213,9 @@
 				}
 
 			},
+			parseint:function(val){
+				return parseInt(val)
+			},
 			dateformate: function(val) {
 				let num = String(val).substring(0, 13) - 0;
 				let date = new Date(num);
@@ -208,7 +228,26 @@
 				return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 			},
 			direct: function(val) {
-				return val == 1 ? '正向' : val == 2 ? '逆向' : val
+				let drivingStatus=''
+				switch (val){
+				  case 0:
+				    drivingStatus = "正向行驶";
+				    break;
+				  case 1:
+				    drivingStatus = "逆向行驶";
+				    break;
+				  case 2:
+				    drivingStatus = "同向跨车道";
+				    break;
+				  case 3:
+				    drivingStatus = "压单边行驶";
+				    break;
+				  case 4:
+				    drivingStatus = "跨中线行驶";
+				    break;
+				}
+				console.log(drivingStatus)
+				return drivingStatus
 			}
 		}
 	}

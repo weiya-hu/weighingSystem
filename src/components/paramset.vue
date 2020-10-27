@@ -1,326 +1,343 @@
 <template>
 	<div class="paramset" id="paramset" style="height: 100%;">
 		<div class="settop">
-			<div :class="setactive==1?'settopactive':''" @click="changeset(1)">仪器设置</div>
-			<div :class="setactive==2?'settopactive':''" @click="changeset(2)">其他参数</div>
-			<div :class="setactive==3?'settopactive':''" @click="changeset(3)">重量系数</div>
-		</div>
-		<!--仪器设置-->
-		<div class="cont" v-if='setactive==1'>
-			<form @submit.prevent="sureset">
-				<!--仪表设置-->
-				<div class="setcont">
-					<div>
-						<label for="PlaceType">传感器安装方式：</label>
-						<select id="PlaceType" v-model.number="setform.PlaceType">
-							<option value='0'>交叉安装</option>
-							<option value='1'>平行安装</option>
-							<option value='2'>单排安装</option>
-						</select>
-					</div>
-					<div>
-						<label for="SenseDis">传感器布设距离：</label>
-						<input type="number" id="SenseDis" v-model.trim.number="setform.SenseDis" />
-					</div>
-					<div>
-						<label for="WaveShark">波形变动比：</label>
-						<input type="number" id="WaveShark" v-model.trim.number="setform.WaveShark" />
-					</div>
-					<div>
-						<label for="SpeedType">速度测试方式：</label>
-						<select id="SpeedType" v-model.number="setform.SpeedType">
-							<option value="0">触发</option>
-							<option value="1">重量</option>
-						</select>
-					</div>
-					<div>
-						<label for="MinWavWidth">最小波宽：</label>
-						<input type="number" id="MinWavWidth" v-model.trim.number="setform.MinWavWidth" />
-					</div>
-					<div>
-						<label for="DATarget">DA调整目标点：</label>
-						<input type="number" id="DATarget" v-model.trim.number="setform.DATarget" />
-					</div>
-					<div>
-						<label for="DADelay">DA调整时间：</label>
-						<input type="number" id="DADelay" v-model.trim.number="setform.DADelay" />
-					</div>
-					<div>
-						<label for="TestWay">测量方式：</label>
-						<select id="TestWay" v-model.number="setform.TestWay">
-							<option value="0">平顶</option>
-							<option value="1">积分</option>
-						</select>
-					</div>
-					<div class="settxt">
-						仪表设置
-					</div>
-				</div>
-				<!--串口设置-->
-				<div class="setcont">
-					<div class="setcontport">
-						<div class="portone">
-							<div>车辆数据：</div>
-							<label for="CarData">串口号：</label>
-							<select id="CarData" v-model.number="setform.CarData">
-								<option value="0">1</option>
-								<option value="1">2</option>
-								<option value="2">3</option>
-								<option value="3">4</option>
-								<option value="4">5</option>
-								<option value="5">6</option>
-								<option value="6">7</option>
-								<option value="7">8</option>
-							</select>
-						</div>
-						<div>
-							<label for="CarBuad">串口波特率：</label>
-							<select id="CarBuad" v-model.number="setform.CarBuad">
-								<option value="0">2400</option>
-								<option value="1">4800</option>
-								<option value="2">9600</option>
-								<option value="3">38400</option>
-								<option value="4">57600</option>
-								<option value="5">115200</option>
-							</select>
-						</div>
-					</div>
-					<div class="setcontport">
-						<div class="portone">
-							<div>前抓拍：</div>
-							<label for="FrontCap">串口号：</label>
-							<select id="FrontCap" v-model.number="setform.FrontCap">
-								<option value="0">1</option>
-								<option value="1">2</option>
-								<option value="2">3</option>
-								<option value="3">4</option>
-								<option value="4">5</option>
-								<option value="5">6</option>
-								<option value="6">7</option>
-								<option value="7">8</option>
-							</select>
-						</div>
-						<div>
-							<label for="FrontBuad">串口波特率：</label>
-							<select id="FrontBuad" v-model.number="setform.FrontBuad">
-								<option value="0">2400</option>
-								<option value="1">4800</option>
-								<option value="2">9600</option>
-								<option value="3">38400</option>
-								<option value="4">57600</option>
-								<option value="5">115200</option>
-							</select>
-						</div>
-					</div>
-					<div class="setcontport">
-						<div class="portone">
-							<div>后抓拍：</div>
-							<label for="BackCap">串口号：</label>
-							<select id="BackCap" v-model.number="setform.BackCap">
-								<option value="0">1</option>
-								<option value="1">2</option>
-								<option value="2">3</option>
-								<option value="3">4</option>
-								<option value="4">5</option>
-								<option value="5">6</option>
-								<option value="6">7</option>
-								<option value="7">8</option>
-							</select>
-						</div>
-						<div>
-							<label for="BackBuad">串口波特率：</label>
-							<select id="BackBuad" v-model.number="setform.BackBuad">
-								<option value="0">2400</option>
-								<option value="1">4800</option>
-								<option value="2">9600</option>
-								<option value="3">38400</option>
-								<option value="4">57600</option>
-								<option value="5">115200</option>
-							</select>
-						</div>
-					</div>
-					<div class="settxt">串口参数</div>
-				</div>
-				<!--配车参数-->
-				<div class="setcont">
-					<div>
-						<label for="AxisMaxDis">最大轴距：</label>
-						<input type="number" id="AxisMaxDis" v-model.trim.number="setform.AxisMaxDis" />
-					</div>
-					<div>
-						<label for="AxisMinDis">最小轴距：</label>
-						<input type="number" id="AxisMinDis" v-model.trim.number="setform.AxisMinDis" />
-					</div>
-					<div>
-						<label for="SpeedMax">最大速度：</label>
-						<input type="number" id="SpeedMax" v-model.trim.number="setform.SpeedMax" />
-					</div>
-					<div>
-						<label for="SpeedMin">最小速度：</label>
-						<input type="number" id="SpeedMin" v-model.trim.number="setform.SpeedMin" />
-					</div>
-					<div>
-						<label for="AxisMaxCnt">最大轴数：</label>
-						<input type="number" id="AxisMaxCnt" v-model.trim.number="setform.AxisMaxCnt" />
-					</div>
-					<div>
-						<label for="WeightDiff">重量差值比：</label>
-						<input type="number" id="WeightDiff" v-model.trim.number="setform.WeightDiff" />
-					</div>
-					<!--<div class="surebut surebutother">确认设置</div>-->
-					<div class="settxt">配车参数</div>
-				</div>
-				<!--交互参数-->
-				<div class="weightset setcontip">
-					<div class="flexl">
-						<div>
-							<label for="UploadAddr">服务器IP：</label>
-							<input type="text" id="UploadAddr" v-model.trim="setform.UploadAddr" />
-						</div>
-						<div>
-							<label for="UploadPort">端口号：</label>
-							<input type="number" id="UploadPort" v-model.trim.number="setform.UploadPort" />
-						</div>
-					</div>
-
-					<div class="weighttxt">交互参数</div>
-					<!--<p class="surebut surebutt">确认</p>-->
-				</div>
-				<!--分度值设置-->
-				<div class="weightset setcontip flexa">
-					<div class="flexl">
-						<div>
-							<label for="fenduvalue">分度值：</label>
-							<input type="number" id="fenduvalue" v-model.trim="fenduvalue" />
-						</div>
-					</div>
-
-					<div class="weighttxt">分度值设置</div>
-					<p class="surebut surebutt fendusure" @click="fendusure">确认</p>
-				</div>
-				<!--<div class="surebut" @click="sureset">确认设置</div>-->
-				<input type="submit" class="surebut" value="确认设置" />
-			</form>
+			<div :class="setactive==1?'settopactive':''" @click="changeset(1)" style="cursor: pointer;">其他参数</div>
+			<!--现在把仪器设置暂时隐藏了-->
+			<div :class="setactive==2?'settopactive':''" @click="changeset(2)" style="cursor: pointer;">数据修正</div>
+			<div :class="setactive==3?'settopactive':''" @click="changeset(3)" style="cursor: pointer;">重量系数</div>
 		</div>
 		<!--其他参数-->
-		<div class="cont" v-if='setactive==2'>
-			<div class="add flexr" @click="addmodeshow">
+		<div class="cont" v-if='setactive==1'>
+			<div class="add flexr" @click="addSensor">
 				<div class="fleximg addimg">
 					<img src="../assets/add.png" />
 				</div>
-				<div class="addtxt">增加</div>
+				<div class="addtxt">新增传感器</div>
 			</div>
-			<div class="otherparam">
-				<div class="title titletop">
-					<div>车道号</div>
-					<div>通道传感器</div>
-					<div>行驶方向</div>
-					<div>车道名</div>
-					<div>站点编号</div>
-					<div>操作</div>
+			<el-table
+	      :key="tableKey"
+	      v-loading="listLoading"
+	      :data="ruleForm.Sensor"
+	      border
+	      fit
+	      height='300px'
+	      highlight-current-row
+	      style="width: 96%;margin: 0.56rem auto 0;"
+	    >	
+	      <!--<el-table-column label="ID" prop="eid" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+	        <template slot-scope="{row}">
+	          <span>{{ row.eid}}</span>
+	        </template>
+	      </el-table-column>-->
+	      <el-table-column label="传感器ID" min-width="100px" align="center" fixed="left">
+	        <template slot-scope="{row}">
+	          <span>{{ row.SensorID}}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="是否启用" min-width="100px" align="center">
+	        <template slot-scope="{row}">
+	          <el-tag v-if='row.Enable' type="primary">启用</el-tag>
+	          <el-tag v-else='row.Enable' type="warning">不启用</el-tag>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="向右顺向" min-width="100px" align="center">
+	        <template slot-scope="{row}">
+	          <span :style="row.ToRight?'':'color:#F56C6C'">{{ row.ToRight | boolean}}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="向右排数" min-width="100px" align="center">
+	        <template slot-scope="{row}">
+	          <span>{{ row.ToRightRow }}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="车道号" min-width="100px" align="center">
+	        <template slot-scope="{row}">
+	          <span>{{ row.RoadNum }}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="采样率" min-width="100px" align="center">
+	        <template slot-scope="{row}">
+	          <span>{{ row.Freq }}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="积分比率" min-width="100px" align="center">
+	        <template slot-scope="{row}">
+	          <span>{{ row.JFRatio}}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="平顶比率" min-width="100px" align="center">
+	        <template slot-scope="{row}">
+	          <span>{{ row.PDRatio }}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="触发入" min-width="80px" align="center">
+	        <template slot-scope="{row}">
+	          <span class="link-type">{{ row.TrigIn }}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="触发出" min-width="110px" align="center">
+	        <template slot-scope="{row}">
+	          <span class="link-type">{{ row.TrigOut }}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="目标DA值" min-width="110px" align="center">
+	        <template slot-scope="{row}">
+	        	<span class="link-type">{{ row.DATarget }}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="DAC使能" min-width="110px" align="center">
+	        <template slot-scope="{row}">
+	          <span :style="row.DACEnable?'':'color:#F56C6C'">{{ row.DACEnable | boolean}}</span>
+	        </template>
+	      </el-table-column>
+	      <el-table-column label="操作" align="center" min-width="147" class-name="small-padding fixed-width" fixed="right">
+	        <template slot-scope="{row,$index}">
+	          <el-button type="primary" size="mini" @click="handleUpdate(row,$index)">
+	            	修改
+	          </el-button>
+	          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
+	            	删除
+	          </el-button>
+	        </template>
+	      </el-table-column>
+	    </el-table>
+			
+			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="125px" class="demo-ruleForm" 
+				style='background: #2E405E;width:96%;margin: 20px auto;box-sizing:border-box; padding: 20px 20px 10px 0;display: flex;justify-content: space-around;align-content: center;flex-wrap: wrap;'>
+				<div style="width: 40%;padding: 2%;border: 1px solid #EEEEEE;border-radius: 10px;margin: 2%;position: relative;">
+					<div style="position: absolute;top: -20px;left: 10px;color: #FFFFFF;background: #2E405E;padding: 10px;font-size: 14px;">
+						录制波形
+					</div>
+				  <el-form-item label="录制使能" prop="RecEnable" style='text-align: left;color: #FFFFFF' required>
+				    <el-select v-model="ruleForm.RecEnable">
+				      <el-option label="是" :value="btrue"></el-option>
+				      <el-option label="否" :value="bfalse"></el-option>
+				    </el-select>
+				  </el-form-item>
+				  <el-form-item label="录制服务器" prop="RecAddress" required>
+				    <el-input v-model="ruleForm.RecAddress"></el-input>
+				  </el-form-item>
+				  <el-form-item label="登录密码" prop="RecPassword" required>
+				    <el-input v-model="ruleForm.RecPassword"></el-input>
+				  </el-form-item>
+				  <el-form-item label="录制数据库" prop="RecDB" required>
+				    <el-input v-model="ruleForm.RecDB" type='number'></el-input>
+				  </el-form-item>
 				</div>
-
-				<div class="otherparamdown">
-					<!-- <div class="title titledown" v-for="(item,index) in 10"> -->
-					<div class="title titledown" v-for="(item,index) in roadlist">
-						<div>{{item.Id}}</div>
-						<div>{{item.SenseNum | arrtostring}}</div>
-						<div>{{item.Direct | direct}}</div>
-						<div>{{item.RoadName}}</div>
-						<div>{{item.RoadCode}}</div>
-						<!-- <div>车道号</div>
-						<div>通道传感器</div>
-						<div>行驶方向</div>
-						<div>车道名</div>
-						<div>站点编号</div> -->
-						<div class="changebt fleximg">
-							<span @click="closechangemode(index)">修改</span>
-							<span @click="cancelsensor(index)">删除</span>
-						</div>
+				<div style="width: 40%;padding: 2%;border: 1px solid #EEEEEE;border-radius: 10px;margin: 2%;position: relative;">
+					<div style="position: absolute;top: -20px;left: 10px;color: #FFFFFF;background: #2E405E;padding: 10px;font-size: 14px;">
+						MQTT
+					</div>
+				  <el-form-item label="MQTT地址" prop="MqttAddr" required>
+				    <el-input v-model="ruleForm.MqttAddr"></el-input>
+				  </el-form-item>
+				  <el-form-item label="MQTT主题" prop="MqttTopic" required>
+				    <el-input v-model="ruleForm.MqttTopic"></el-input>
+				  </el-form-item>
+				  <el-form-item label="MQTT用户名" prop="MqttUser" required>
+				    <el-input v-model="ruleForm.MqttUser"></el-input>
+				  </el-form-item>
+				  <el-form-item label="MQTT密码" prop="MqttPass" required>
+				    <el-input v-model="ruleForm.MqttPass"></el-input>
+				  </el-form-item>
+				</div>
+				<div style="width: 40%;padding: 2%;border: 1px solid #EEEEEE;border-radius: 10px;margin: 2%;position: relative;">
+					<div style="position: absolute;top: -20px;left: 10px;color: #FFFFFF;background: #2E405E;padding: 10px;font-size: 14px;">
+						采集器
+					</div>
+				  <el-form-item label="采集器IP" prop="AdcBoardIP" required>
+				    <el-input v-model="ruleForm.AdcBoardIP"></el-input>
+				  </el-form-item>
+				  <el-form-item label="采集器端口" prop="AdcBoardPort" required>
+				    <el-input v-model="ruleForm.AdcBoardPort" type='number'></el-input>
+				  </el-form-item>
+				  <el-form-item label="数据接收端口" prop="AdcRecPort" required>
+				    <el-input v-model="ruleForm.AdcRecPort" type='number'></el-input>
+				  </el-form-item>
+				</div>
+				<div style="width: 40%;padding: 2%;border: 1px solid #EEEEEE;border-radius: 10px;margin: 2%;position: relative;">
+					<div style="position: absolute;top: -20px;left: 10px;color: #FFFFFF;background: #2E405E;padding: 10px;font-size: 14px;">
+						发送波形
+					</div>
+				  <el-form-item label="实时波形发送使能" prop="SendWaveEnable" style='text-align: left;' required>
+				    <el-select v-model="ruleForm.SendWaveEnable">
+				      <el-option label="是" :value="btrue"></el-option>
+				      <el-option label="否" :value="bfalse"></el-option>
+				    </el-select>
+				  </el-form-item>
+				  <el-form-item label="发送目标IP" prop="SendWaveIP" required>
+				    <el-input v-model="ruleForm.SendWaveIP"></el-input>
+				  </el-form-item>
+				  <el-form-item label="发送端口" prop="SendWavePort" required>
+				    <el-input v-model="ruleForm.SendWavePort" type='number'></el-input>
+				  </el-form-item>
+				</div>
+				<div style="width: 90%; padding: 2%;border: 1px solid #EEEEEE;border-radius: 10px;margin: 2%;position: relative;">
+					<div style="position: absolute;top: -20px;left: 10px;color: #FFFFFF;background: #2E405E;padding: 10px;font-size: 14px;">
+						其他
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="设备序列号" prop="DevSN" required>
+					    <el-input v-model="ruleForm.DevSN" ></el-input>
+					  </el-form-item>
+					  <el-form-item label="传感器排数" prop="SensorRow" required>
+					    <el-input v-model="ruleForm.SensorRow" type='number'></el-input>
+					  </el-form-item>
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="安装间距" prop="PlaceDistance" required>
+					    <el-input v-model="ruleForm.PlaceDistance" type='number'></el-input>
+					  </el-form-item>
+					  <el-form-item label="敏感宽度" prop="SenstiveWidth" required>
+					    <el-input v-model="ruleForm.SenstiveWidth" type='number'></el-input>
+					  </el-form-item>
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="速度变动比" prop="SpeedRation" required>
+					    <el-input v-model="ruleForm.SpeedRation" type='number'></el-input>
+					  </el-form-item>
+					  <el-form-item label="最大轴数" prop="MaxAxisCount" required>
+					    <el-input v-model="ruleForm.MaxAxisCount" type='number'></el-input>
+					  </el-form-item>
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="连轴增加值" prop="LianZhouAdd" required>
+					    <el-input v-model="ruleForm.LianZhouAdd" type='number'></el-input>
+					  </el-form-item>
+					  <el-form-item label="结束判断距离" prop="EndDistance" required>
+					    <el-input v-model="ruleForm.EndDistance" type='number'></el-input>
+					  </el-form-item>
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="最小速度" prop="MinSpeed" required>
+					    <el-input v-model="ruleForm.MinSpeed" type='number'></el-input>
+					  </el-form-item>
+					  <el-form-item label="最大速度" prop="MaxSpeed" required>
+					    <el-input v-model="ruleForm.MaxSpeed" type='number'></el-input>
+					  </el-form-item>
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="最小轴距" prop="MinAxisDistance" required>
+					    <el-input v-model="ruleForm.MinAxisDistance" type='number'></el-input>
+					  </el-form-item>
+					  <el-form-item label="最大轴距" prop="MaxAxisDistance" required>
+					    <el-input v-model="ruleForm.MaxAxisDistance" type='number'></el-input>
+					  </el-form-item>
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="重量差值比" prop="WeightRation" required>
+					    <el-input v-model="ruleForm.WeightRation" type='number'></el-input>
+					 </el-form-item>
+					  <el-form-item label="解算方法" prop="SloveWay" required>
+					    <!--<el-input v-model.number.trim="ruleForm.SloveWay" type='number'></el-input>-->
+					    <el-select v-model="ruleForm.SloveWay">
+					      <el-option label="平顶" :value='num0'></el-option>
+					      <el-option label="积分" :value='num1'></el-option>
+					    </el-select>
+					  </el-form-item>
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="波形宽度" prop="WavWidth" required>
+					    <el-input v-model="ruleForm.WavWidth" type='number'></el-input>
+					  </el-form-item>
+					  <el-form-item label="触发点数" prop="TrigCnt" required>
+					    <el-input v-model="ruleForm.TrigCnt" type='number'></el-input>
+					  </el-form-item>
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="包络总点数" prop="BaloAllCnt" required>
+					    <el-input v-model="ruleForm.BaloAllCnt" type='number'></el-input>
+					  </el-form-item>
+					  <el-form-item label="包络检测点" prop="BaloCheckPoint" required>
+					    <el-input v-model="ruleForm.BaloCheckPoint" type='number'></el-input>
+					  </el-form-item>
+					</div>
+					<div style="display: flex;justify-content: space-around;align-items: center;">
+						<el-form-item label="包络步进" prop="BaloStep" required>
+					    <el-input v-model="ruleForm.BaloStep" type='number'></el-input>
+					  </el-form-item>
 					</div>
 				</div>
+			  
+			  <el-form-item>
+			    <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+			  </el-form-item>
+			</el-form>
+		
+			<el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+	      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
+	        <el-form-item label="传感器ID" prop="SensorID" required>
+				    <el-input v-model="temp.SensorID" disabled></el-input>
+				  </el-form-item>
+				  <el-form-item label="是否启用" prop='Enable' required>
+	          <el-select v-model.boolean="temp.Enable" class="filter-item" placeholder="请选择">
+	            <el-option label="是" :value="btrue"></el-option>
+				      <el-option label="否" :value="bfalse"></el-option>
+	          </el-select>
+	        </el-form-item>
+	        <el-form-item label="向右顺向" prop='ToRight' required>
+	          <el-select v-model.boolean="temp.ToRight" class="filter-item" placeholder="请选择">
+	            <el-option label="是" :value="btrue"></el-option>
+				      <el-option label="否" :value="bfalse"></el-option>
+	          </el-select>
+	        </el-form-item>
+	        <el-form-item label="向右排数" prop="ToRightRow" required>
+				    <el-input v-model="temp.ToRightRow" type='number'></el-input>
+				  </el-form-item>
+				  <el-form-item label="车道号" prop="RoadNum" required>
+				    <el-input v-model="temp.RoadNum" type='number'></el-input>
+				  </el-form-item>
+				  <el-form-item label="采样率" prop="Freq" required>
+				    <el-input v-model="temp.Freq" type='number'></el-input>
+				  </el-form-item>
+				  <el-form-item label="积分比率" prop="JFRatio" required>
+				    <el-input v-model="temp.JFRatio" type='number'></el-input>
+				  </el-form-item>
+				  <el-form-item label="平顶比率" prop="PDRatio" required>
+				    <el-input v-model="temp.PDRatio" type='number'></el-input>
+				  </el-form-item>
+				  <el-form-item label="触发入" prop="TrigIn" required>
+				    <el-input v-model="temp.TrigIn" type='number'></el-input>
+				  </el-form-item>
+				  <el-form-item label="触发出" prop="TrigOut" required>
+				    <el-input v-model="temp.TrigOut" type='number'></el-input>
+				  </el-form-item>
+				  <el-form-item label="目标DA值" prop="DATarget" required>
+				    <el-input v-model="temp.DATarget" type='number'></el-input>
+				  </el-form-item>
+				  <el-form-item label="DAC使能" prop='DACEnable' required>
+	          <el-select v-model="temp.DACEnable" class="filter-item" placeholder="请选择">
+	            <el-option label="是" :value="btrue"></el-option>
+				      <el-option label="否" :value="bfalse"></el-option>
+	          </el-select>
+	        </el-form-item>
+	      </el-form>
+	      <div slot="footer" class="dialog-footer">
+	        <el-button @click="dialogFormVisible = false">
+	          	取消
+	        </el-button>
+	        <el-button type="primary" @click="dialogStatus==='add'?createData():updateData()">
+	                         确定
+	        </el-button>
+	      </div>
+	    </el-dialog>
+		</div>
+		<div class="cont" v-show='2'>
+			<div class="flexl" style="background: #FFFFFF;margin: 4% 0 0 0;">
+				<div class="flexl" style="text-align: left;background: #FFFFFF;color: #333333;font-size: 0.16rem;padding: 0.3rem 0.6rem;box-sizing: border-box;">
+					<div>修正：</div>
+					<el-radio-group v-model="rownum" class='flexl'  size="small">
+		      	<el-radio-button :label="num0" >1通道</el-radio-button>
+			      <el-radio-button :label="num1" >2通道</el-radio-button>
+			    </el-radio-group>
+				</div>
+				<el-button type="primary" size="small" @click='senddata'>发送修正后数据</el-button>
 			</div>
-			<!--修改通道信息模态框-->
-			<div class="changemode" v-if="ischangemodeshow">
-				<div class="changecont" @click.stop='sensorpreshownone'>
-					<div class="imgflex caimg" @click="closechangemode">
-						<img src="../assets/cha.png" />
-					</div>
-					<div class="setcont">
-						<div class="settxt">车道号{{roadexchangeform.Id}}</div>
-						<div class="flexl">
-							<label>通道传感器：</label>
-							<div class="sensork" @click.stop='sensorpreshows'>{{roadexchangeform.SenseNum | arrtostring}}
-								<div class="sensorpre" v-show='sensorpreshow' @click.stop='stopmp'>
-									<div v-for="item in 32" class="sensorchangeitem flexl">
-										<label :for="'sensornum'+item" class="sensorlb">{{item}}</label>
-										<input class="checkboxs" @change="sensorchange" type="checkbox" :name="'sensornum'+item" :id="'sensornum'+item" :value="item" v-model="roadexchangeform.SenseNum" />
-									</div>
-								</div>
-							</div>
-						</div>
-						<div>
-							<label for="exdirect">行驶方向：</label>
-							<select id="exdirect" v-model.number="roadexchangeform.Direct" @click.stop='stopmp'>
-								<option value='0'>正向</option>
-								<option value='1'>逆向</option>
-							</select>
-						</div>
-						<div>
-							<label for="exroadname">车道名：</label>
-							<input type="text" id="exroadname" v-model.trim="roadexchangeform.RoadName" @click.stop='stopmp' />
-						</div>
-						<div>
-							<label for="exroadnum">站点编号：</label>
-							<input type="number" id="exroadnum" v-model.trim="roadexchangeform.RoadCode" @click.stop='stopmp' />
-						</div>
-						<div class="surebut surebutother" @click="surexchange">确认修改</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="changemode" v-if='isaddmodeshow'>
-				<div class="changecont" @click="addsensorpreshowno">
-					<div class="imgflex caimg" @click="addmodeshow">
-						<img src="../assets/cha.png" />
-					</div>
-					<div class="setcont">
-						<div>
-							<label for="exid">车道号：</label>
-							<select id="exid" v-model.number="roadaddform.Id">
-								<option v-for="item in 16" :value="item">{{item}}</option>
-							</select>
-						</div>
-						<div class="flexl">
-							<label>通道传感器：</label>
-							<div class="sensork" @click.stop="addsensorpreshows">{{roadaddform.SenseNum | arrtostring}}
-								<div class="sensorpre" v-if="addsensorpreshow" @click.stop="stopmp()" >
-									<div v-for="item in 32" class="sensorchangeitem flexl">
-										<label :for="'sensornum'+item" class="sensorlb">{{item}}</label>
-										<input class="checkboxs" type="checkbox" @change="addsensorcheckbox" :name="'sensornum'+item" :id="'sensornum'+item" :value="item" v-model="roadaddform.SenseNum"  @click="stopmp()"/>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div>
-							<label for="exdirect">行驶方向：</label>
-							<select id="exdirect" v-model.number="roadaddform.Direct">
-								<option value='0'>正向</option>
-								<option value='1'>逆向</option>
-							</select>
-						</div>
-						<div>
-							<label for="exroadname">车道名：</label>
-							<input type="text" id="exroadname" v-model.trim="roadaddform.RoadName" @click="stopmp()" />
-						</div>
-						<div>
-							<label for="exroadnum">站点编号：</label>
-							<input type="number" id="exroadnum" v-model.trim="roadaddform.RoadCode" @click="stopmp()"/>
-						</div>
-						<div class="surebut surebutother" @click="sureadd">确认增加</div>
-					</div>
-				</div>
-			</div>
+			
+				<div style="text-align: left;background: #FFFFFF;color: #333333;font-size: 0.16rem;padding: 0.1rem 0.6rem;box-sizing: border-box;">速度修正曲线</div>
+			<div id="mychart" style="height: 80%;background: #FFFFFF;"></div>
+		
+			
 		</div>
 		<!--重量系数-->
 		<div class="cont" v-if='setactive==3'>
@@ -334,7 +351,7 @@
 							<div v-for="item in weighingform.slice(0,16)">{{item.Id}}</div>
 						</div>
 						<div class="numlist flexl">
-							<input v-for="(item,index) in weighingform.slice(0,16)" type="number" @change="fixedto2(index,'weigh',item.WeightParam)" v-model.trim.number="item.WeightParam"/>
+							<input v-for="(item,index) in weighingform.slice(0,16)" type="number" @change="fixedto2(index,'weigh',item.WeightParam)" v-model="item.WeightParam"/>
 						</div>
 					</div>
 				</div>
@@ -342,7 +359,7 @@
 					<div class="weightcoefficient">积分系数</div>
 					<div class="weightright">
 						<div class="numlist flexl">
-							<input v-for="(item,index) in weighingform.slice(0,16)" type="number" @change="fixedto2(index,'calc',item.CalcParam)" v-model.trim.number="item.CalcParam"/>
+							<input v-for="(item,index) in weighingform.slice(0,16)" type="number" @change="fixedto2(index,'calc',item.CalcParam)" v-model="item.CalcParam"/>
 						</div>
 					</div>
 
@@ -355,7 +372,7 @@
 							<div v-for="item in weighingform.slice(16,32)">{{item.Id}}</div>
 						</div>
 						<div class="numlist flexl">
-							<input v-for="(item,index) in weighingform.slice(16,32)" type="number" @change="fixedto2(index+16,'weigh',item.WeightParam)" v-model.trim.number="item.WeightParam"/>
+							<input v-for="(item,index) in weighingform.slice(16,32)" type="number" @change="fixedto2(index+16,'weigh',item.WeightParam)" v-model="item.WeightParam"/>
 						</div>
 					</div>
 				</div>
@@ -364,7 +381,7 @@
 					<div class="weightright">
 						<div class="numlist flexl">
 							<!-- <input v-for="item in 16" type="text" /> -->
-							<input v-for="(item,index) in weighingform.slice(16,32)" type="number" @change="fixedto2(index+16,'calc',item.CalcParam)" v-model.trim.number="item.CalcParam"/>
+							<input v-for="(item,index) in weighingform.slice(16,32)" type="number" @change="fixedto2(index+16,'calc',item.CalcParam)" v-model="item.CalcParam"/>
 						</div>
 					</div>
 
@@ -380,7 +397,30 @@
 	export default {
 		props: ['click'],
 		data() {
+			var validateTrigIn = (rule, value, callback) => {
+        if (this.temp.TrigOut && (value-this.temp.TrigOut<20 || value<this.temp.TrigOut)){
+          callback(new Error('触发入必须比触发出至少大20'));
+        } else{
+        	 callback();
+        }
+      };
+      var validateTrigOut = (rule, value, callback) => {
+        if (this.temp.TrigIn && (this.temp.TrigIn-value<20 || value>this.temp.TrigIn)){
+          callback(new Error('触发出必须比触发入至少小20'));
+        } else{
+        	 callback();
+        }
+      };
 			return {
+				rownum:0,
+				option:null,//chart的option
+				mychart:null,//chart
+				down:false,//在chart里面鼠标是否按下的标识
+				tableKey: 0,//element表格里面的参数
+	      list: null,
+	      num0:0,
+	      num1:1,
+	      listLoading: false,
 				logo: 'this.src="' + require('../assets/noimg.png') + '"',
 				height: '',
 				setactive: 1, //选择设置
@@ -430,19 +470,113 @@
 					RoadName: '',
 					RoadCode: ''
 				},
+				
+				temp: {
+	        DACEnable: true,
+					DATarget: 5000,
+					Enable: true,
+					Freq: 10000,
+					RoadNum: 1,
+					SensorID: 1,
+					ToRight: true,
+					ToRightRow: 1,
+					TrigIn: 400,
+					TrigOut: 380,
+					PDRatio:1,
+					JFRatio:1,
+	      },
+	      addtemp: {
+	        DACEnable: true,
+					DATarget: 5000,
+					Enable: null,
+					Freq: 10000,
+					RoadNum: null,
+					SensorID: null,
+					ToRight: null,
+					ToRightRow: null,
+					TrigIn: 400,
+					TrigOut: 380,
+					PDRatio:1,
+					JFRatio:1,
+	      },
+	      dialogFormVisible: false,
+	      dialogStatus: '',
+	      textMap: {
+	        update: '修改',
+	        add: '新增'
+	      },
+      	editindex:-1,//修改表格的下标
+      	btrue:true,//真
+      	bfalse:false,//假
+      	num0:0,//数字0
+      	num1:1,//数字1
+      	
 				sensorpreshow: false, //修改通道传感器的多选框是否显示
 				addsensorpreshow: false, //增加通道传感器的多选框是否显示
 				ischangemodeshow: false, //车道号修改页面的mode是否显示
 				isaddmodeshow: false,//车道号增加页面的mode是否显示
 				weighingform:[],//重量系数数据数组
 				fenduvalue:'',//分度值
+				ruleForm: {
+          AdcBoardIP: "",
+					AdcBoardPort: null,
+					AdcRecPort: null,
+					DevSN: "",
+					EndDistance: null,
+					LianZhouAdd: null,
+					MaxAxisCount: null,
+					MaxAxisDistance: null,
+					MaxSpeed: null,
+					MinAxisDistance: null,
+					MinSpeed: null,
+					MqttAddr: "",
+					MqttPass: "",
+					MqttTopic: "",
+					MqttUser: "",
+					PlaceDistance: null,
+					RecAddress: "",
+					RecDB: null,
+					RecEnable: null,
+					RecPassword: "",
+					SendWaveEnable: null,
+					SendWaveIP: "",
+					SendWavePort: null,
+					Sensor: [],
+					SensorRow: null,
+					SenstiveWidth: null,
+					SpeedRation: null,
+					WeightRation: null,
+					WavWidth:null,
+					TrigCnt:null,
+					BaloAllCnt:4000,
+					BaloCheckPoint:3000,
+					BaloStep:5,
+					SloveWay:0
+        },
+        rules: {
+          name: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          region: [
+            { required: true, message: '请选择活动区域', trigger: 'change' }
+          ],
+          TrigIn:[
+           { validator: validateTrigIn, trigger: 'change' },
+          ],
+          TrigOut:[
+           { validator: validateTrigOut, trigger: 'change' },
+          ]
+          
+        }
 			}
 		},
+		
 		created() {
-			console.log('history')
 			let data = {
 				type: 'get'
 			}
+			this.$socket.emit('getcfg', JSON.stringify(data));
 			this.$socket.emit('sparm', JSON.stringify(data));
 			let arr=[]
 			for(let i=1;i<33;i++){
@@ -450,20 +584,274 @@
 				arr.push(itm)
 			}
 			this.weighingform=arr
-			
 		},
 		mounted() {
-			console.log('paramset')
-			//页面刚开始发送分度值请求
-			let data = {
-				Type: 'get'
-			}
-			this.$socket.emit('fendu', JSON.stringify(data));
+			//对于请求过来的表格数据根据SensorID先排序然后再显示到页面上
+			let that=this;
+			this.ruleForm.Sensor.sort(this.compare('SensorID'))
+//			this.chartinit()
+//			this.$nextTick(() => {
+//		        this.chartinit()
+//		      })
+			window.onresize = function(){ // 定义窗口大小变更通知事件
+				that.mychart.resize()
+    		setTimeout(function(){
+    			that.mychart.resize()
+    		},5000)
+      };
 		},
 		methods: {
+			senddata(){
+				console.log(this.option.series)
+			},
+			//chart初始化
+			chartinit(){
+				console.log(80983490)
+				this.mychart = this.$echarts.init(document.getElementById('mychart'))
+				this.setoption()
+			},
+			setoption(){
+				let that=this;
+				this.option={
+            tooltip: {
+                trigger: 'axis',
+                borderColor: 'red', //鼠标移动到图上面时，背景色
+                padding: 0, //定义内边距
+                formatter: function (params) { //params存的是对应的y轴数据
+                    if (that.down) {
+                        var bl = (h - 40 - 80) / (that.max-that.min); //比例尺
+                        var v=((h - 60 - y) / bl).toFixed(0)*1; //实际高度
+                        that.option.series[that.rownum].data[params[0].dataIndex] = v+that.min;
+                        that.mychart.setOption(that.option);
+                    }
+                    var showHtm="";
+                    showHtm=params[that.rownum].axisValue+'<br>';
+                    for(var i=0;i<params.length;i++){
+                        var name = params[i].seriesName;//名称
+                        var value = params[i].value;//值
+                        showHtm+=params[i].marker + " " +name+ ' ：'+value+ " " +'<br>'
+                    }
+                    return showHtm;
+                }
+            },
+             dataZoom: [{
+		            show: true
+		        }, {
+		            type: 'inside'
+		        }],
+            legend: {
+		          data: ['1通道', '2通道']
+		        },
+            xAxis: {
+                type: 'category',
+                data: ['1', '2', '3', '4', '5', '6', '7', '1', '2', '3', '4', '5', '6', '7']
+            },
+            yAxis: {
+                type: 'value',
+                max: function(value) {
+                    let max=Math.round((value.max+100)/10)*10 ;
+                    that.max=max;
+                    return max;
+                },
+                min: function(value) {
+                    let min=Math.floor((value.min-100)/10)*10 ;
+                    that.min=min;
+                    return min;
+                }
+            },
+            series: [{
+                name:'1通道',
+                data: [1, 2, 3, 9, 1, 14, 6, 2, 5, 1, 3, 4, 5, 17],
+                type: 'line',
+                smooth: true
+            }, {
+                name:'2通道',
+                data: [2, 5, 1, 3, 4, 5, -7, 2, 3, 9, 1, 4, 6, 2],
+                type: 'line',
+                smooth: true
+            }]
+        };
+        this.mychart.setOption(this.option);
+        var canva = document.getElementsByTagName('canvas')[0];
+        var canvas = $('canvas');
+        var x, y;
+        var h = canvas.height();
+        this.down = false;
+        
+        canvas.on('mousemove', function (e) {
+            var location = that.getLocation(canva,e.clientX, e.clientY);//忽略canvas临近标签的干扰
+            // y = e.clientY;
+            y = location.y;
+//          console.log( that.option)
+        })
+
+        canvas.on('mousedown', function (e) {
+            that.down = true;
+        })
+        canvas.on('mouseup', function (e) {
+            that.down = false;
+        })
+			},
+			getLocation(canva,x, y) {
+        var bbox = canva.getBoundingClientRect();
+        return {
+            x: (x - bbox.left) * (canva.width / bbox.width),
+            y: (y - bbox.top) * (canva.height / bbox.height)
+        };
+     	},
+			//添加传感器
+			addSensor(){
+				this.temp = JSON.parse(JSON.stringify(this.addtemp)) 
+				this.temp.SensorID=this.ruleForm.Sensor.length>0?this.ruleForm.Sensor[this.ruleForm.Sensor.length-1].SensorID+1:1
+				this.dialogStatus = 'add'
+				this.dialogFormVisible = true
+	      this.$nextTick(() => {
+	        this.$refs['dataForm'].clearValidate()
+	      })
+			},
+			//其他参数 表格删除按钮
+			handleDelete(row, index) {
+	      this.$notify({
+	        title: 'Success',
+	        message: '删除成功',
+	        type: 'success',
+	        duration: 2000
+	      })
+	      this.ruleForm.Sensor.splice(index, 1)
+	    },
+			//其他参数 表格修改按钮
+			handleUpdate(row,index) {
+	      this.temp = Object.assign({}, row) // copy obj
+	      this.editindex=index
+	      this.dialogStatus = 'update'
+	      this.dialogFormVisible = true
+	      this.$nextTick(() => {
+	        this.$refs['dataForm'].clearValidate()
+	      })
+	    },
+			//其他参数 提交按钮
+	    submitForm(formName) {
+	     	let that=this
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let formdata={
+		          AdcBoardIP: that.ruleForm.AdcBoardIP,
+							AdcBoardPort:parseFloat(that.ruleForm.AdcBoardPort),
+							AdcRecPort: parseFloat(that.ruleForm.AdcRecPort),
+							DevSN: that.ruleForm.DevSN,
+							EndDistance: parseFloat(that.ruleForm.EndDistance),
+							LianZhouAdd: parseFloat(that.ruleForm.LianZhouAdd),
+							MaxAxisCount: parseFloat(that.ruleForm.MaxAxisCount),
+							MaxAxisDistance: parseFloat(that.ruleForm.MaxAxisDistance),
+							MaxSpeed: parseFloat(that.ruleForm.MaxSpeed),
+							MinAxisDistance: parseFloat(that.ruleForm.MinAxisDistance),
+							MinSpeed: parseFloat(that.ruleForm.MinSpeed),
+							MqttAddr: that.ruleForm.MqttAddr,
+							MqttPass: that.ruleForm.MqttPass,
+							MqttTopic: that.ruleForm.MqttTopic,
+							MqttUser: that.ruleForm.MqttUser,
+							PlaceDistance: parseFloat(that.ruleForm.PlaceDistance),
+							RecAddress: that.ruleForm.RecAddress,
+							RecDB: parseFloat(that.ruleForm.RecDB),
+							RecEnable: that.ruleForm.RecEnable,
+							RecPassword: that.ruleForm.RecPassword,
+							SendWaveEnable: that.ruleForm.SendWaveEnable,
+							SendWaveIP: that.ruleForm.SendWaveIP,
+							SendWavePort: parseFloat(that.ruleForm.SendWavePort),
+							Sensor: that.ruleForm.Sensor,
+							SensorRow: parseFloat(that.ruleForm.SensorRow),
+							SenstiveWidth: parseFloat(that.ruleForm.SenstiveWidth),
+							SpeedRation: parseFloat(that.ruleForm.SpeedRation),
+							SloveWay:that.ruleForm.SloveWay,
+							WeightRation: parseFloat(that.ruleForm.WeightRation),
+							WavWidth:parseFloat(that.ruleForm.WavWidth),
+							TrigCnt:parseFloat(that.ruleForm.TrigCnt),
+							BaloAllCnt:parseFloat(that.ruleForm.BaloAllCnt),
+							BaloCheckPoint:parseFloat(that.ruleForm.BaloCheckPoint),
+							BaloStep:parseFloat(that.ruleForm.BaloStep)
+		        };
+            this.$socket.emit('setcfg', JSON.stringify(formdata));
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      
+      //修改页面的确定按钮
+      updateData() {
+	      this.$refs['dataForm'].validate((valid) => {
+	        if (valid) {
+	          const tempData ={
+			        DACEnable: this.temp.DACEnable,
+							DATarget:parseFloat(this.temp.DATarget),
+							Enable: this.temp.Enable,
+							Freq: parseFloat(this.temp.Freq),
+							RoadNum: parseFloat(this.temp.RoadNum),
+							SensorID: parseFloat(this.temp.SensorID),
+							ToRight: this.temp.ToRight,
+							ToRightRow: parseFloat(this.temp.ToRightRow),
+							TrigIn: parseFloat(this.temp.TrigIn),
+							TrigOut: parseFloat(this.temp.TrigOut),
+							PDRatio:parseFloat(this.temp.PDRatio),
+							JFRatio:parseFloat(this.temp.JFRatio)
+			      };
+	          this.ruleForm.Sensor.splice(this.editindex, 1,tempData)
+	          this.dialogFormVisible = false
+	          this.$notify({
+              title: 'Success',
+              message: '修改成功',
+              type: 'success',
+              duration: 2000
+           })
+	        }
+	      })
+	    },
+	    
+	    //新增页面的确定按钮
+	    createData(){
+	    	let hh=this.$refs['dataForm'].validate()
+	    	this.$refs['dataForm'].validate((valid) => {
+	        if (valid) {
+	          const tempData ={
+			        DACEnable: this.temp.DACEnable,
+							DATarget:parseFloat(this.temp.DATarget),
+							Enable: this.temp.Enable,
+							Freq: parseFloat(this.temp.Freq),
+							RoadNum: parseFloat(this.temp.RoadNum),
+							SensorID: parseFloat(this.temp.SensorID),
+							ToRight: this.temp.ToRight,
+							ToRightRow: parseFloat(this.temp.ToRightRow),
+							TrigIn: parseFloat(this.temp.TrigIn),
+							TrigOut: parseFloat(this.temp.TrigOut),
+							PDRatio:parseFloat(this.temp.PDRatio),
+							JFRatio:parseFloat(this.temp.JFRatio)
+			      };
+	          this.ruleForm.Sensor.push(tempData)
+	          this.dialogFormVisible = false
+	          this.$notify({
+              title: 'Success',
+              message: '新增成功',
+              type: 'success',
+              duration: 2000
+           })
+	        }
+	      })
+	    },
+//    resetForm(formName) {
+//      this.$refs[formName].resetFields();
+//    },
+
+			//sort方法根据数组中对象的某一个属性值进行排序，
+			compare(property){
+			    return function(a,b){
+			        var value1 = a[property];
+			        var value2 = b[property];
+			        return value1 - value2;
+			    }
+			},
 			//阻止冒泡
 			stopmp() {
-				console.log()
 			},
 			//设置分度值
 			fendusure(){
@@ -474,11 +862,9 @@
 				this.$socket.emit('fendu', JSON.stringify(data));
 			},
 			sensorpreshows() {
-				console.log(1000)
 				this.sensorpreshow = !this.sensorpreshow
 			},
 			addsensorpreshows(){
-				console.log(1000)
 				this.addsensorpreshow = !this.addsensorpreshow
 			},
 			addsensorpreshowno(){
@@ -500,7 +886,6 @@
 			},
 			//增加通道传感器checkbox改变触发函数，排序
 			addsensorcheckbox(){
-				console.log(this.roadaddform.SenseNum)
 				let SenseNum = JSON.parse(JSON.stringify(this.roadaddform.SenseNum))
 				SenseNum.sort(function(a, b) {
 					return(a - b)
@@ -510,39 +895,8 @@
 			},
 			//点击切换3个不同的设置
 			changeset(id) {
-				console.log(id)
 				let cnum=this.setactive,that=this;
 				that.setactive = id
-//				if(cnum==1){
-//					let localsetform = localStorage.getItem('localsetform')
-//					console.log(this.CompareJsonObj(JSON.parse(localsetform), this.setform))
-//					console.log(JSON.parse(localsetform))
-//					console.log(this.setform)
-//					if(this.CompareJsonObj(JSON.parse(localsetform), this.setform)) {
-//						this.setactive = id
-//					} else {
-//						this.$confirm('是否保存设置?', '提示', {
-//							confirmButtonText: '确定',
-//							cancelButtonText: '取消',
-//							type: 'warning'
-//						}).then(() => {
-//							if(that.sureset()){
-//								that.setactive = id
-//							}else{//保存失败没写。饶工没有返回失败的情况
-//								
-//							}
-//						}).catch(() => {
-//							that.$message({
-//								type: 'info',
-//								message: '已取消保存设置'
-//							});
-//							that.setactive = id
-//						});
-//					}
-//				}else{
-//					that.setactive = id
-//				}
-				
 			},
 			//删除通道信息
 			cancelsensor(index) {
@@ -560,25 +914,19 @@
 			},
 			//是否显示修改模态框、修改通道信息
 			closechangemode(idx) {
-				console.log(idx)
 				this.ischangemodeshow = !this.ischangemodeshow
 				if(!isNaN(idx)) {
 					this.roadexchangeform = JSON.parse(JSON.stringify(this.roadlist[idx]))
 				}
-				console.log(this.roadexchangeform.Id)
 			},
 			//是否显示增加通道信息模态框
 			addmodeshow() {
 				this.isaddmodeshow = !this.isaddmodeshow
-				console.log(this.isaddmodeshow)
 			},
 			//确认修改
 			surexchange() {
-				console.log('querenxiugai')
 				let id = this.roadexchangeform.Id;
-				console.log(this.roadexchangeform)
 				this.roadlist[id - 1] = JSON.parse(JSON.stringify(this.roadexchangeform))
-				console.log(this.roadlist)
 				let data = {
 					Type: 'set',
 					Data:this.roadlist
@@ -593,13 +941,11 @@
 				})
 				let idx=(roadidlist || []).findIndex((item) => item === this.roadaddform.Id);
 				roadlist.splice(idx,0,this.roadaddform)
-				console.log(roadlist)
 				this.roadlist=roadlist
 				let data = {
 					Type: 'set',
 					Data:this.roadlist
 				}
-				console.log(data)
 				this.$socket.emit('roadset', JSON.stringify(data));
 				
 			},
@@ -616,7 +962,6 @@
 			},
 			//确认设置
 			sureset() {
-				console.log(this.setform)
 				//仪器设置中有数据没有设置时的提示
 				if(this.setform.PlaceType < 0) {
 					this.$alert('请选择传感器安装方式!', '错误提示', {
@@ -756,7 +1101,6 @@
 				let data = JSON.parse(JSON.stringify(this.setform)),
 					that = this;
 				data.Type = 'set'
-				console.log(JSON.stringify(data))
 				this.$socket.emit('sparm', JSON.stringify(data));
 				return true
 			},
@@ -823,7 +1167,6 @@
 				return this.CompareObj(objA, objB, true); //默认为true
 			},
 			fixedto2(idx,isweigh,val){
-				console.log(idx,isweigh,val)
 				let weighingform=JSON.parse(JSON.stringify(this.weighingform))
 				if(isweigh=='weigh'){
 					weighingform[idx].WeightParam=Number(val).toFixed(2)
@@ -832,14 +1175,12 @@
 					weighingform[idx].CalcParam=Number(val).toFixed(2)
 					this.weighingform=weighingform
 				}
-				console.log(Number(val).toFixed(2))
 			},
 			//重量系数确认按钮
 			sureweighbt(){
 				let weighingform=JSON.parse(JSON.stringify(this.weighingform))
 				for(let i = weighingform.length - 1; i >= 0; i--){
 					if(weighingform[i].WeightParam==="" && weighingform[i].CalcParam===""){
-						console.log(i)
 						weighingform.splice(i,1)
 					}else{
 						weighingform[i].WeightParam=Number(weighingform[i].WeightParam) 
@@ -855,75 +1196,83 @@
 			}
 		},
 		sockets: {
-			fendu(data){
-				let dat = JSON.parse(data)
-				if(dat.Type=='get'){
-					this.fenduvalue=dat.Fendu
-				}
-				if(dat.Type=='set' && dat.Status=='success'){
-					this.$message({
-						type: 'success',
-						message: '设置分度值成功!'
-					});
+			getcfg(data){
+				let dat = JSON.parse(data),that=this;
+				this.ruleForm=dat
+				this.ruleForm.Sensor.sort(this.compare('SensorID'))
+			},
+			setcfg(data){
+				if(data=='{status:success}'){
+					this.$notify({
+		        title: 'Success',
+		        message: '设置成功',
+		        type: 'success',
+		        duration: 2000
+		      })
 				}
 			},
-			sparm(data) {
-				console.log(JSON.parse(data))
-				let dat = JSON.parse(data)
-				this.setform = dat
-				//本地存储最新的从服务器传过来的仪器设置数据（stringify形式）
-				//和页面的setform对比提醒是否保存上传设置，和点击到其他页面时是否保存页面修改的setform
-				localStorage.setItem('localsetform', data);
-				if(dat.Type == 'success') {
-					this.$message({
-						type: 'success',
-						message: '设置成功!'
-					});
-				}
-			},
-			roadset(data) {
-				console.log('设置2')
-				let dat = JSON.parse(data)
-				console.log(dat)
-				this.roadlist = dat.Data;
-				if(dat.Type == 'success') {
-					console.log('成功')
-					this.$message({
-						type: 'success',
-						message: '操作成功!'
-					});
-					this.roadaddform={
-						Id: '',
-						SenseNum: [],
-						Direct: '',
-						RoadName: '',
-						RoadCode: ''
-					}
-					this.isaddmodeshow = false;
-					this.ischangemodeshow = false
-				}
-			},
-			cparm(data) {
-				let dat=JSON.parse(data).Data
-				let weighingform=JSON.parse(JSON.stringify(this.weighingform))
-				console.log('设置3') 
-				console.log(dat)
-				for(let i=0;i<dat.length;i++){
-					let idx=dat[i].Id;
-					dat[i].WeightParam=Number(dat[i].WeightParam).toFixed(2)
-					dat[i].CalcParam=Number(dat[i].CalcParam).toFixed(2)
-					weighingform[idx-1]=dat[i]
-				}
-				this.weighingform=weighingform
-				localStorage.setItem('localweighform', JSON.stringify(this.weighingform));
-				if(JSON.parse(data).Type == 'success') {
-					console.log('成功')
-					this.$message({
-						type: 'success',
-						message: '操作成功!'
-					});
-				}
-			},
+//			fendu(data){
+//				let dat = JSON.parse(data)
+//				if(dat.Type=='get'){
+//					this.fenduvalue=dat.Fendu
+//				}
+//				if(dat.Type=='set' && dat.Status=='success'){
+//					this.$message({
+//						type: 'success',
+//						message: '设置分度值成功!'
+//					});
+//				}
+//			},
+//			sparm(data) {
+//				let dat = JSON.parse(data)
+//				this.setform = dat
+//				//本地存储最新的从服务器传过来的仪器设置数据（stringify形式）
+//				//和页面的setform对比提醒是否保存上传设置，和点击到其他页面时是否保存页面修改的setform
+//				localStorage.setItem('localsetform', data);
+//				if(dat.Type == 'success') {
+//					this.$message({
+//						type: 'success',
+//						message: '设置成功!'
+//					});
+//				}
+//			},
+//			roadset(data) {
+//				let dat = JSON.parse(data)
+//				this.roadlist = dat.Data;
+//				if(dat.Type == 'success') {
+//					this.$message({
+//						type: 'success',
+//						message: '操作成功!'
+//					});
+//					this.roadaddform={
+//						Id: '',
+//						SenseNum: [],
+//						Direct: '',
+//						RoadName: '',
+//						RoadCode: ''
+//					}
+//					this.isaddmodeshow = false;
+//					this.ischangemodeshow = false
+//				}
+//			},
+//			cparm(data) {
+//				let dat=JSON.parse(data).Data
+//				let weighingform=JSON.parse(JSON.stringify(this.weighingform))
+//				for(let i=0;i<dat.length;i++){
+//					let idx=dat[i].Id;
+//					dat[i].WeightParam=Number(dat[i].WeightParam).toFixed(2)
+//					dat[i].CalcParam=Number(dat[i].CalcParam).toFixed(2)
+//					weighingform[idx-1]=dat[i]
+//				}
+//				this.weighingform=weighingform
+//				localStorage.setItem('localweighform', JSON.stringify(this.weighingform));
+//				if(JSON.parse(data).Type == 'success') {
+//					this.$message({
+//						type: 'success',
+//						message: '操作成功!'
+//					});
+//				}
+//			},
 		},
 		filters: {
 			tofixed: function(value) {
@@ -938,70 +1287,56 @@
 			},
 			arrtostring: function(val) {
 				return val.join("，")
+			},
+			boolean(val){
+				return val?'是':'否'
 			}
 		},
 		watch: {
 			//监听设置页面点击到不同的设置，提醒是否保存当前设置
 			setactive(val, oldval) {
 				console.log(val, oldval)
-				if(val == 2) {
-					let data = {
-						type: 'get'
-					}
-					this.$socket.emit('roadset', JSON.stringify(data));
-					console.log('发送了设置2')
-				};
-				if(val == 3) {
-					let data = {
-						type: 'get'
-					}
-					this.$socket.emit('cparm', JSON.stringify(data));
-					console.log('发送了设置3')
+				if(val === 2) {
+					console.log(this.rownum)
+					this.$nextTick(() => {
+		        this.chartinit()
+		      })
+					
 				};
 				
 			},
-			//监听父组件有没有从设置页面点击到其他页面，再比对设置数据有没有改变或者改了忘了上传，提醒保存设置
-//			click(val, oldval) {
-//				let that = this;
-//				//如果传过来的是1就是要从设置页面跳转到其他页面了
-//				if(val) {
-//					console.log('home传过来1',this.setactive)
-//					if(this.setactive == 1) {
-////						console.log('设置在仪器设置')
-////						let localsetform = localStorage.getItem('localsetform')
-////						if(this.CompareJsonObj(JSON.parse(localsetform), this.setform)) {
-////							this.$emit('isok', true);
-////						} else {
-////							this.$confirm('是否保存设置?', '提示', {
-////								confirmButtonText: '确定',
-////								cancelButtonText: '取消',
-////								type: 'warning'
-////							}).then(() => {
-////								if(that.sureset()) {
-////									that.$emit('isok', true);
-////								} else {
-////									that.$emit('isok', false);
-////								}
-////							}).catch(() => {
-////								that.$message({
-////									type: 'info',
-////									message: '已取消保存设置'
-////								});
-////								that.$emit('isok', true);
-////							});
-////						}
-//						that.$emit('isok', true);
-//					} else if(this.setactive == 2) {
-//						that.$emit('isok', true);
-//					} else if(this.setactive == 3) {
-//						that.$emit('isok', true);
-//					}
-//				}
-//			}
 		}
 	}
+
 </script>
-<style scoped>
+<style>
+	#paramset .el-form-item__label {
+    text-align: right;
+    vertical-align: middle;
+    float: left;
+    font-size: 14px;
+    color: #FFFFFF;
+    line-height: 40px;
+    padding: 0 12px 0 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+	}
+	#paramset .el-dialog{
+		    position: relative;
+    margin: 0 auto 50px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 50%;
+    background: #2E405E;
+	}
+	#paramset .el-dialog__title {
+    line-height: 24px;
+    font-size: 18px;
+    color: #FFFFFF;
+	}
 	.paramset {
 		width: 100%;
 		background: #2E405E;
@@ -1023,6 +1358,7 @@
 		border-radius: 4px;
 		color: #F8FFFF;
 		position: relative;
+		height: 100%;
 	}
 	
 	.settop {
@@ -1100,12 +1436,12 @@
 		padding: 0.2rem 0.1rem;
 	}
 	
-	.paramset label {
+	/*.paramset label {
 		font-size: 0.27rem;
 		width: 2.5rem;
 		text-align: right;
 		display: inline-block;
-	}
+	}*/
 	
 	.settxt {
 		position: absolute;
